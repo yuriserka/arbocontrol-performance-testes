@@ -1,0 +1,114 @@
+  config:
+    target: 'http://localhost:9995'
+    phases:
+      - duration: 1
+        arrivalRate: 1
+        maxVusers: 1
+    processor: "./funcs.js"
+    defaults:
+      headers:
+        Content-Type: application/json
+  scenarios:
+    - name: "Criação de um relatorio"
+      flow:
+          # Faz Login e guarda o token
+          - post:
+              url: "/api/auth"
+              beforeRequest: "printRequestInfo"
+              afterResponse:
+                - "printStatusAfterRequest"
+                - "printVariablesAndResponseBody"
+              json:
+                cpf: "111.111.111-11"
+                password: "12345678"
+                unidadeId: 1
+              capture:
+                - json: "$.token"
+                  as: "token"
+                - json: "$.usuario.unidade.id"
+                  as: "unidade_id"
+                - json: "$.usuario.unidade.areaGestao.id"
+                  as: "area_gestao_id"
+          # permite a edição de atividades em situação "Nova"
+          - put:
+              headers:
+                Authorization: "Bearer {{ token }}"
+              url: "/api/v1/situacoes-atividade/1"
+              qs:
+                unidade_atual_id: {{ unidade_id }}
+                area_gestao_atual_id: {{ area_gestao_id }}
+              afterResponse: "printStatusAfterRequest"
+              beforeRequest: "printRequestInfo"
+              json:
+                id: ~
+                nome: "Nova"
+                descricao: ""
+                ativo: true
+                sequencia: 1
+                liberadaParaEdicao: true
+                exigeJustificativa: false
+          # adiciona o formulário "Inspeção Geral" às atividdades do tipo "PE"
+          - post:
+              headers:
+                Authorization: "Bearer {{ token }}"
+              url: "/api/v1/tipoatividade-formulario/bulk"
+              qs:
+                unidade_atual_id: {{ unidade_id }}
+                area_gestao_atual_id: {{ area_gestao_id }}
+              afterResponse: "printStatusAfterRequest"
+              beforeRequest: "printRequestInfo"
+              json:
+                [
+                  {
+                    formularioId: 1,
+                    tipoAtividadeId: 3
+                  }
+                ]
+              capture:
+                json: "$"
+                as: "form_pe_body"
+          # torna o formulário "Inspeção Geral" principal
+          - put:
+              headers:
+                Authorization: "Bearer {{ token }}"
+              url: "/api/v1/tipoatividade-formulario/atualizar-formulario-principal"
+              qs:
+                tipoAtividadeId: 3
+                formularioId: 1
+                principal: true
+                unidade_atual_id: {{ unidade_id }}
+                area_gestao_atual_id: {{ area_gestao_id }}
+              afterResponse: "printStatusAfterRequest"
+              beforeRequest:
+                - "setTipoAtividadeFormPrincipal"
+                - "printRequestInfo"
+          # remove a edição de atividades em situação "Nova"
+          - put:
+              headers:
+                Authorization: "Bearer {{ token }}"
+              url: "/api/v1/situacoes-atividade/1"
+              qs:
+                unidade_atual_id: {{ unidade_id }}
+                area_gestao_atual_id: {{ area_gestao_id }}
+              afterResponse: "printStatusAfterRequest"
+              beforeRequest: "printRequestInfo"
+              json:
+                id: ~
+                nome: "Nova"
+                descricao: ""
+                ativo: true
+                sequencia: 1
+                liberadaParaEdicao: false
+                exigeJustificativa: false
+          # remove o formulário "Inspeção Geral" às atividdades do tipo "PE"
+          - delete:
+              headers:
+                Authorization: "Bearer {{ token }}"
+              url: "/api/v1/tipoatividade-formulario"
+              qs:
+                unidade_atual_id: {{ unidade_id }}
+                area_gestao_atual_id: {{ area_gestao_id }}
+                tipo_atividade_id: 3
+                formulario_id: 1
+              afterResponse: "printStatusAfterRequest"
+              beforeRequest: "printRequestInfo"              

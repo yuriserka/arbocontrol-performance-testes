@@ -1,2 +1,3 @@
 apache-jmeter-*/
 .idea/
+node_modules
