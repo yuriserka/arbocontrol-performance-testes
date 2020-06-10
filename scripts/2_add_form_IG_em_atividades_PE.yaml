@@ -11,7 +11,6 @@ config:
   variables:
     cpf: "111.111.111-11"
     senha: "12345678"
-    situacao_atividade_nova_seq: 1
     inspecao_geral_form_id: 1
     tpo_atividade_PE_id: 3
 scenarios:

@@ -5,10 +5,11 @@
   "repository": "https://github.com/yuriserka/arbocontrol-performance-testes",
   "license": "MIT",
   "scripts": {
-    "launch": "yarn artillery run ./scripts/2_add_form_IG_em_atividades_PE.yaml",
+    "launch": "yarn artillery run ./scripts/5_imoveis.yaml",
     "compile": "tsc -p ."
   },
   "dependencies": {
-    "artillery": "^1.6.0"
+    "artillery": "^1.6.0",
+    "axios": "^0.19.2"
   }
 }

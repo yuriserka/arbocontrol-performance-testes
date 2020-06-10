@@ -29,7 +29,6 @@ scenarios:
             url: "/api/auth"
             afterResponse:
               - "showResponseStatus"
-              - "showVariablesAfter"
             json:
               cpf: "{{ cpf }}"
               password: "{{ senha }}"

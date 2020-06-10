@@ -1,0 +1,119 @@
+config:
+  target: 'http://localhost:9995'
+  phases:
+    - duration: 1
+      arrivalRate: 1
+      maxVusers: 1
+  processor: "../src/index.js"
+  defaults:
+    headers:
+      Content-Type: application/json
+  variables:
+    cpf: "111.111.111-11"
+    senha: "12345678"
+scenarios:
+  - name: "cadastro de territorios"
+    flow:
+        # login/auth
+        - get:
+            url: "/api/auth/pesquisar-unidades-por-cpf"
+            qs:
+              cpf: "{{ cpf }}"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$[0].id"
+                as: "unidade_id"
+              - json: "$[0]"
+                as: "obj_unidade_atual"
+        - post:
+            url: "/api/auth"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              cpf: "{{ cpf }}"
+              password: "{{ senha }}"
+              unidadeId: "{{ unidade_id }}"
+            capture:
+              - json: "$.token"
+                as: "token"
+              - json: "$.usuario.unidade.areaGestao.id"
+                as: "area_gestao_id"
+        # insere um territorio
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/territorios"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              altitude: ""
+              ativa: ""
+              circulo: null
+              codigoLegado: ""
+              coordenadas: null
+              croqui: ""
+              dataAlteracao: ""
+              dataCriacao: ""
+              googlePlusCode: ""
+              latitude: ""
+              longitude: ""
+              nome: "TERRITORIO TESTE"
+              numeroQuarteirao: ""
+              sequenciaQuarteirao: ""
+              territorioSuperior: null
+              tipoZona: null
+              versao: ""
+              areaGestao: {
+                areaGestaoSuperior: {
+                  areaGestaoSuperior: null,
+                  ibge: "123455",
+                  id: 1,
+                  latitude: null,
+                  longitude: null,
+                  nivel: {
+                    id: 3,
+                    nome: "FEDERAL",
+                    codigo: "FE"
+                  },
+                  nome: "Brasil",
+                  sigla: "BR",
+                  zoomPadraoMapa: null,
+                },
+                ibge: "123456",
+                id: 2,
+                latitude: null,
+                longitude: null,
+                nivel: {
+                  id: 2,
+                  nome: "ESTADUAL",
+                  codigo: "ES"
+                },
+                nome: "Amazonas",
+                sigla: "AM",
+                zoomPadraoMapa: null,
+              }
+              tipoTerritorio: {
+                ativo: true,
+                createDateTime: null,
+                descricao: null,
+                id: 3,
+                nome: "BAIRRO",
+                updateDateTime: null,
+              }
+            capture:
+              - json: "$.id"
+                as: "territorio_criado_id"
+        # deleta o territorio criado
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/territorios/{{ territorio_criado_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
