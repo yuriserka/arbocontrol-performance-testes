@@ -1,0 +1,41 @@
+config:
+  target: 'http://localhost:9995'
+  phases:
+    - duration: 1
+      arrivalRate: 1
+      maxVusers: 1
+  processor: "../src/index.js"
+  defaults:
+    headers:
+      Content-Type: application/json
+  variables:
+    cpf: "111.111.111-11"
+    senha: "12345678"
+scenarios:
+  - name: "autenticação/login"
+    flow:
+        # Faz Login e guarda o token
+        - get:
+            url: "/api/auth/pesquisar-unidades-por-cpf"
+            qs:
+              cpf: "{{ cpf }}"
+            afterResponse:
+              - "showResponseStatus"
+              - "showVariablesAfter"
+            capture:
+              - json: "$[0].id"
+                as: "unidade_id"
+        - post:
+            url: "/api/auth"
+            afterResponse:
+              - "showResponseStatus"
+              - "showVariablesAfter"
+            json:
+              cpf: "{{ cpf }}"
+              password: "{{ senha }}"
+              unidadeId: "{{ unidade_id }}"
+            capture:
+              - json: "$.token"
+                as: "token"
+              - json: "$.usuario.unidade.areaGestao.id"
+                as: "area_gestao_id"
