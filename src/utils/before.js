@@ -15,9 +15,4 @@ module.exports = {
         });
         return next();
     },
-    castIdToNumber: (req, ctx, ee, next) => {
-        req.json.id = parseInt(req.json.id);
-        console.log('id req.body', req.json);
-        return next();
-    },
 }

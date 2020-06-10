@@ -4,8 +4,10 @@ module.exports = {
         return next();
     },
     showVariablesAfter: (req, res, ctx, ee, next) => {
-        const variables = { ...ctx.vars, '$processEnvironment': undefined };
-        console.log(variables);
+        console.log({
+            ...ctx.vars,
+            '$processEnvironment': undefined
+        });
         return next();
     },
     showResponseBody: (req, res, ctx, ee, next) => {
