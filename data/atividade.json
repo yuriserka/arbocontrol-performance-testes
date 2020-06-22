@@ -1,0 +1,562 @@
+{
+  "codigo": null,
+  "unidade": {
+    "id": 1,
+    "nome": "SES - AM",
+    "sigla": "SES - AM",
+    "unidadeSuperior": null,
+    "areaGestao": {
+      "id": 2,
+      "ibge": "123456",
+      "nome": "Amazonas",
+      "sigla": "AM",
+      "areaGestaoSuperior": {
+        "id": 1,
+        "ibge": "123455",
+        "nome": "Brasil",
+        "sigla": "BR",
+        "areaGestaoSuperior": null,
+        "nivel": {
+          "id": 3,
+          "nome": "FEDERAL",
+          "codigo": "FE"
+        },
+        "latitude": null,
+        "longitude": null,
+        "zoomPadraoMapa": null
+      },
+      "nivel": {
+        "id": 2,
+        "nome": "ESTADUAL",
+        "codigo": "ES"
+      },
+      "latitude": null,
+      "longitude": null,
+      "zoomPadraoMapa": null
+    },
+    "tipoUnidade": {
+      "id": 18,
+      "nome": "Unidade de Vigilância em Saúde",
+      "descricao": null,
+      "ativo": true
+    },
+    "demandante": false,
+    "parceiro": false
+  },
+  "dataInicio": "2020-06-22T03:00:00.000Z",
+  "dataFim": "2020-06-22T03:00:00.000Z",
+  "titulo": "",
+  "descricao": null,
+  "abrangencia": "LOCAL_ESPECIFICO",
+  "tipoAtividade": {
+    "id": 3,
+    "nome": "PE - Ponto Estratégico",
+    "descricao": "Descrição Exemplo",
+    "formulario": {
+      "id": 1,
+      "titulo": "Inspeção Geral",
+      "questoesExibidasNaPesquisa": [
+        {
+          "id": 1018,
+          "createDateTime": "2019-05-01T04:46:21.419Z",
+          "updateDateTime": "2019-05-01T04:46:21.419Z",
+          "nome": "atividade_tipo_atividade",
+          "titulo": "Tipo de Atividade"
+        },
+        {
+          "id": 1019,
+          "createDateTime": "2019-05-01T04:46:21.419Z",
+          "updateDateTime": "2019-05-01T04:46:21.419Z",
+          "nome": "atividade_ciclo",
+          "titulo": "Ciclo"
+        },
+        {
+          "id": 1020,
+          "createDateTime": "2019-05-01T04:46:21.420Z",
+          "updateDateTime": "2019-05-01T04:46:21.420Z",
+          "nome": "atividade_data_inspecao",
+          "titulo": "Data Inspeção"
+        }
+      ],
+      "configuracaoGeoLocalizacao": {
+        "id": 2008,
+        "createDateTime": "2019-05-23T18:05:01.348Z",
+        "updateDateTime": "2019-05-23T18:05:01.348Z",
+        "questaoLatitude": {
+          "id": 2006,
+          "createDateTime": "2019-05-23T18:05:01.343Z",
+          "updateDateTime": "2019-05-23T18:05:01.343Z",
+          "nome": "latitude",
+          "titulo": "Latitude Atual"
+        },
+        "questaoLongitude": {
+          "id": 2007,
+          "createDateTime": "2019-05-23T18:05:01.347Z",
+          "updateDateTime": "2019-05-23T18:05:01.347Z",
+          "nome": "longitude",
+          "titulo": "Longitude Atual"
+        },
+        "questaoPlusCode": null
+      },
+      "surveyJS": {
+        "pages": [
+          {
+            "name": "page1",
+            "elements": [
+              {
+                "name": "_agente",
+                "nome": "Lista de Agentes",
+                "type": "dropdown",
+                "title": "Agente",
+                "codigo": "_agente",
+                "descricao": "Listagem de agentes carregada a partir da lista de pessoas"
+              },
+              {
+                "name": "_supervisor",
+                "nome": "Lista de Pessoas",
+                "type": "dropdown",
+                "title": "Supervisor",
+                "codigo": "_supervisor",
+                "descricao": "Listagem de pessoas"
+              },
+              {
+                "name": "latitude",
+                "type": "text",
+                "title": "Latitude Atual",
+                "readOnly": true,
+                "descricao": "Latitude do dispositivo"
+              },
+              {
+                "name": "longitude",
+                "type": "text",
+                "title": "Longitude Atual",
+                "readOnly": true,
+                "descricao": "Longitude do dispositivo"
+              },
+              {
+                "name": "atividade_tipo_atividade",
+                "nome": "tipo_atividade",
+                "type": "dropdown",
+                "title": "Tipo de Atividade",
+                "codigo": "tipo_atividade",
+                "choices": [
+                  "LI-Levantamento de Índice",
+                  "LI+T: Levantamento de Índice + Tratamento",
+                  "PE: Ponto Estratégico",
+                  "T: Tratamento",
+                  "DF: Delimitação de Foco",
+                  "PVE: Pesquisa Vetorial Especial"
+                ],
+                "descricao": "Tipo da usuario conforme o PNCD, Programa Nacional de Controle da Dengue",
+                "isRequired": true
+              },
+              {
+                "name": "atividade_ciclo",
+                "nome": "Ciclo",
+                "type": "text",
+                "title": "Ciclo",
+                "codigo": "ciclo",
+                "descricao": "Número do Ciclo de Ano"
+              },
+              {
+                "name": "atividade_data_inspecao",
+                "nome": "Data Inspeção",
+                "type": "text",
+                "title": "Data Inspeção",
+                "codigo": "atividade_data_inspecao",
+                "descricao": "Data da Inspeção. Pode ser considerada data retroativa",
+                "inputType": "date",
+                "isRequired": true
+              },
+              {
+                "name": "atividade_hora_entrada",
+                "nome": "Hora de Entrada",
+                "type": "text",
+                "title": "Hora da entrada",
+                "codigo": "atividade_hora_entrada",
+                "descricao": "Hora da entrada no imóvel para inspeção",
+                "inputType": "time",
+                "isRequired": true
+              },
+              {
+                "name": "atividade_hora_saida",
+                "nome": "Hora de Saída",
+                "type": "text",
+                "title": "Hora da saída",
+                "codigo": "atividade_hora_saida",
+                "descricao": "Hora da saída no imóvel para inspeção",
+                "inputType": "time",
+                "isRequired": true
+              },
+              {
+                "name": "atividade_tipo_visita",
+                "nome": "Tipo de Visita",
+                "type": "dropdown",
+                "title": "Tipo de Visita",
+                "codigo": "atividade_tipo_visita",
+                "choices": [
+                  "Normal",
+                  "Recuperada",
+                  "Demanda"
+                ],
+                "descricao": "Tipo da Visita conforme lista predefinida.",
+                "isRequired": true
+              },
+              {
+                "name": "atividade_pendencia",
+                "nome": "Pendência",
+                "type": "dropdown",
+                "title": "Pendência",
+                "codigo": "atividade_pendencia",
+                "choices": [
+                  "Recusado",
+                  "Fechado"
+                ],
+                "descricao": "Situação por que está pendente"
+              },
+              {
+                "name": "painel_depositos",
+                "type": "panel",
+                "title": "Depósitos",
+                "elements": [
+                  {
+                    "name": "a1_inspecionado",
+                    "type": "text",
+                    "title": "A1 Inspecionado",
+                    "inputType": "number"
+                  },
+                  {
+                    "name": "a1_positivo",
+                    "type": "text",
+                    "title": "A1 Positivo",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "a1_eliminado",
+                    "type": "text",
+                    "title": "A1 Eliminado",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "a2_inspecionado",
+                    "type": "text",
+                    "title": "A2 Inspecionado",
+                    "inputType": "number"
+                  },
+                  {
+                    "name": "a2_positivo",
+                    "type": "text",
+                    "title": "A2 Positivo",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "a2_eliminado",
+                    "type": "text",
+                    "title": "A2 Eliminado",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "b_inspecionado",
+                    "type": "text",
+                    "title": "B Inspecionado",
+                    "inputType": "number"
+                  },
+                  {
+                    "name": "b_positivo",
+                    "type": "text",
+                    "title": "B Positivo",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "b_eliminado",
+                    "type": "text",
+                    "title": "B Eliminado",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "c_inspecionado",
+                    "type": "text",
+                    "title": "C Inspecionado",
+                    "inputType": "number"
+                  },
+                  {
+                    "name": "c_positivo",
+                    "type": "text",
+                    "title": "C Positivo",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "c_eliminado",
+                    "type": "text",
+                    "title": "C Eliminado",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "d1_inspecionado",
+                    "type": "text",
+                    "title": "D1 Inspecionado",
+                    "inputType": "number"
+                  },
+                  {
+                    "name": "d1_positivo",
+                    "type": "text",
+                    "title": "D1 Positivo",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "d1_eliminado",
+                    "type": "text",
+                    "title": "D1 Eliminado",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "d2_inspecionado",
+                    "type": "text",
+                    "title": "D2 Inspecionado",
+                    "inputType": "number"
+                  },
+                  {
+                    "name": "d2_positivo",
+                    "type": "text",
+                    "title": "D2 Positivo",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "d2_eliminado",
+                    "type": "text",
+                    "title": "D2 Eliminado",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "e_inspecionado",
+                    "type": "text",
+                    "title": "E Inspecionado",
+                    "inputType": "number"
+                  },
+                  {
+                    "name": "e_positivo",
+                    "type": "text",
+                    "title": "E Positivo",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "e_eliminado",
+                    "type": "text",
+                    "title": "E Eliminado",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "atividade_total_inspecionado",
+                    "nome": "Total Inspecionado",
+                    "type": "expression",
+                    "title": "Total Inspecionado",
+                    "codigo": "atividade_total_inspecionado",
+                    "descricao": "Somatório dos Depósitos Identificados no Local",
+                    "expression": "{a1_inspecionado} +{a2_inspecionado} +{b_inspecionado} +{c_inspecionado} +{d1_inspecionado} +{d2_inspecionado} +{e_inspecionado} ",
+                    "commentText": "Other (describe)"
+                  },
+                  {
+                    "name": "depositos_total_positivo",
+                    "nome": "Total Positivo",
+                    "type": "expression",
+                    "title": "Total Positivo",
+                    "codigo": "atividade_total_positivo",
+                    "descricao": "Somatório dos Depósitos Positivos no Local",
+                    "expression": "{a1_positivo} +{a2_positivo} +{b_positivo} +{c_positivo} +{d1_positivo} +{d2_positivo} +{e_positivo} ",
+                    "commentText": "Other (describe)",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "depositos_total_eliminado",
+                    "nome": "Total Eliminado",
+                    "type": "expression",
+                    "title": "Total Eliminado",
+                    "codigo": "atividade_total_eliminado",
+                    "descricao": "Somatório dos Depósitos Eliminados no Local",
+                    "expression": "{a1_eliminado} +{a2_eliminado} +{b_eliminado} +{c_eliminado} +{d1_eliminado} +{d2_eliminado} +{e_eliminado} ",
+                    "commentText": "Other (describe)",
+                    "startWithNewLine": false
+                  }
+                ]
+              },
+              {
+                "name": "painel_coleta_amostra",
+                "type": "panel",
+                "title": "Coleta de Amostras",
+                "elements": [
+                  {
+                    "name": "coleta_amostra_numero_inicial",
+                    "nome": "Número Inicial",
+                    "type": "text",
+                    "title": "Numero Inicial",
+                    "codigo": "coleta_amostra_numero_inicial",
+                    "descricao": "Número inicial da amostra que foi associado ao tubito.",
+                    "inputType": "number"
+                  },
+                  {
+                    "name": "coleta_amostra_numero_final",
+                    "nome": "Número final",
+                    "type": "text",
+                    "title": "Número Final",
+                    "codigo": "coleta_amostra_numero_final",
+                    "descricao": "Número final da amostra que foi associado ao tubito.",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "coleta_amostra_qtde_tubitos",
+                    "nome": "Qtde Tubitos",
+                    "type": "text",
+                    "title": "Qtde Tubitos",
+                    "codigo": "coleta_amostra_qtde_tubitos",
+                    "descricao": "Qtde de Tubos definido com base na diferença de Números Final e Inicial da Amostra.",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  }
+                ]
+              },
+              {
+                "name": "painel_tratamento_larvicida",
+                "type": "panel",
+                "title": "Tratamento Larvicida",
+                "elements": [
+                  {
+                    "name": "tratamento_larvicida_tipo_1",
+                    "nome": "Tipo 1",
+                    "type": "dropdown",
+                    "title": "Tipo 1",
+                    "codigo": "tratamento_larvicida_tipo_1",
+                    "choices": [
+                      "Diflubenzuron",
+                      "Temephós",
+                      "Novaluron",
+                      "PYRIPROXYFEN"
+                    ],
+                    "descricao": "Tipo de Larvicida Utilizado"
+                  },
+                  {
+                    "name": "tratamento_larvicida_qtde_gramas_tipo_1",
+                    "nome": "Qtde Tipo 1 (g)",
+                    "type": "text",
+                    "title": "Qtde Tipo 1 (g)",
+                    "codigo": "tratamento_larvicida_qtde_gramas_tipo_1",
+                    "descricao": "Quantidade em gramas do larvicida utilizado",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "tratamento_larvicida_qtde_tratados_tipo_1",
+                    "nome": "Qtde Tratados",
+                    "type": "text",
+                    "title": "Qtde Tratados",
+                    "codigo": "tratamento_larvicida_qtde_tratados_tipo_1",
+                    "descricao": "Quantidade total de depósitos tratados",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "tratamento_larvicida_tipo_2",
+                    "nome": "Tipo 2",
+                    "type": "dropdown",
+                    "title": "Tipo 2",
+                    "codigo": "tratamento_larvicida_tipo_2",
+                    "choices": [
+                      "Diflubenzuron",
+                      "Temephós",
+                      "Novaluron",
+                      "PYRIPROXYFEN"
+                    ],
+                    "descricao": "Tipo de Larvicida Utilizado"
+                  },
+                  {
+                    "name": "tratamento_larvicida_qtde_gramas_tipo_2",
+                    "nome": "Qtde Tipo 2 (g)",
+                    "type": "text",
+                    "title": "Qtde Tipo 2 (g)",
+                    "codigo": "tratamento_larvicida_qtde_gramas_tipo_2",
+                    "descricao": "Quantidade em gramas do larvicida utilizado",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "tratamento_larvicida_qtde_tratados_tipo_2",
+                    "nome": "Qtde Tratados",
+                    "type": "text",
+                    "title": "Qtde Tratados",
+                    "codigo": "tratamento_larvicida_qtde_tratados_tipo_2",
+                    "descricao": "Quantidade total de depósitos tratados",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  },
+                  {
+                    "name": "tratamento_larvicida_total_tratado",
+                    "nome": "tratamento_larvicida_total_tratado",
+                    "type": "expression",
+                    "title": "Total Tratado",
+                    "codigo": "tratamento_larvicida_total_tratado",
+                    "descricao": "Soma da Qtde de Tratados dos Larvicidas de Tipo 1 e Tipo 2",
+                    "expression": "{tratamento_larvicida_qtde_tratados_tipo_1}+{tratamento_larvicida_qtde_tratados_tipo_2}",
+                    "commentText": "Other (describe)"
+                  }
+                ]
+              },
+              {
+                "name": "painel_tratamento_adulticida",
+                "type": "panel",
+                "title": "Tratamento Adulticida",
+                "elements": [
+                  {
+                    "name": "tratamento_adulticida_tipo",
+                    "nome": "Tipo Adulticida",
+                    "type": "dropdown",
+                    "title": "Tipo Adulticida",
+                    "codigo": "tratamento_adulticida_tipo",
+                    "choices": [
+                      "Deltametrina",
+                      "Alfacypermetrina SC 20",
+                      "Novaluron"
+                    ]
+                  },
+                  {
+                    "name": "tratamento_adulticida_qtde_cargas",
+                    "nome": "Quantidade de Cargas",
+                    "type": "text",
+                    "title": "Quantidade Cargas",
+                    "codigo": "tratamento_adulticida_qtde_cargas",
+                    "inputType": "number",
+                    "startWithNewLine": false
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "title": "Inspeção Geral - Vigilância Entomológica do Aedes aegypti"
+      }
+    },
+    "tiposAtividadesFormularios": []
+  },
+  "situacao": null,
+  "imoveis": [],
+  "territorios": [],
+  "equipe": null,
+  "agentes": [],
+  "supervisores": [],
+  "dataCriacao": "2020-06-22T21:25:20.142Z",
+  "dataEncerramento": null,
+  "motivoEncerramento": null
+}

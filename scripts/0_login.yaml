@@ -21,7 +21,6 @@ scenarios:
               cpf: "{{ cpf }}"
             afterResponse:
               - "showResponseStatus"
-              - "showVariablesAfter"
             capture:
               - json: "$[0].id"
                 as: "unidade_id"

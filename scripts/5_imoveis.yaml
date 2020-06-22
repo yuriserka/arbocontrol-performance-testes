@@ -47,63 +47,10 @@ scenarios:
             qs:
               unidade_atual_id: "{{ unidade_id }}"
               area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createTerritorioJsonBody"
             afterResponse:
               - "showResponseStatus"
-            json:
-              altitude: ""
-              ativa: ""
-              circulo: null
-              codigoLegado: ""
-              coordenadas: null
-              croqui: ""
-              dataAlteracao: ""
-              dataCriacao: ""
-              googlePlusCode: ""
-              latitude: ""
-              longitude: ""
-              nome: "TERRITORIO TESTE"
-              numeroQuarteirao: ""
-              sequenciaQuarteirao: ""
-              territorioSuperior: null
-              tipoZona: null
-              versao: ""
-              areaGestao: {
-                areaGestaoSuperior: {
-                  areaGestaoSuperior: null,
-                  ibge: "123455",
-                  id: 1,
-                  latitude: null,
-                  longitude: null,
-                  nivel: {
-                    id: 3,
-                    nome: "FEDERAL",
-                    codigo: "FE"
-                  },
-                  nome: "Brasil",
-                  sigla: "BR",
-                  zoomPadraoMapa: null,
-                },
-                ibge: "123456",
-                id: 2,
-                latitude: null,
-                longitude: null,
-                nivel: {
-                  id: 2,
-                  nome: "ESTADUAL",
-                  codigo: "ES"
-                },
-                nome: "Amazonas",
-                sigla: "AM",
-                zoomPadraoMapa: null,
-              }
-              tipoTerritorio: {
-                ativo: true,
-                createDateTime: null,
-                descricao: null,
-                id: 3,
-                nome: "BAIRRO",
-                updateDateTime: null,
-              }
             capture:
               - json: "$.id"
                 as: "territorio_criado_id"
@@ -118,7 +65,6 @@ scenarios:
               unidade_atual_id: "{{ unidade_id }}"
               area_gestao_atual_id: "{{ area_gestao_id }}"
             beforeRequest:
-              - "showVariablesBefore"
               - "createImovelJsonBody"
             afterResponse:
               - "showResponseStatus"
