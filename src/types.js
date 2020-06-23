@@ -30,3 +30,12 @@ function IBeforeRequest(req, context, ee, next) {
 function IAfterResponse(req, res, context, ee, next) {
     return next();
 };
+
+/**
+ * @param {ScenarioContext} context is the virtual user's context, context.vars is a dictionary containing all defined variables
+ * @param {EventEmitter} ee is an event emitter that can be used to communicate with Artillery
+ * @param {Next} next is the callback which must be called for the scenario to continue; it takes no arguments
+ */
+function IScenarioHooks(context, ee, next) {
+    return next();
+}

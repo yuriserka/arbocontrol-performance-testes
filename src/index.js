@@ -7,6 +7,7 @@ const loginFuncs = require('./login');
 const imoveisFuncs = require('./imoveis');
 const territoriosFuncs = require('./territorios');
 const atividadesFuncs = require('./atividades');
+const listaDeTrabalhoFuncs = require('./lista_de_trabalho');
 
 module.exports = {
     ...utilsBefore,
@@ -17,4 +18,5 @@ module.exports = {
     ...imoveisFuncs,
     ...territoriosFuncs,
     ...atividadesFuncs,
+    ...listaDeTrabalhoFuncs,
 };

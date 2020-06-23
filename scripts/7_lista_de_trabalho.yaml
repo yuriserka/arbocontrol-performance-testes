@@ -11,8 +11,11 @@ config:
   variables:
     cpf: "111.111.111-11"
     senha: "12345678"
+    inspecao_geral_form_id: 1
+    tipo_atividade_PE_id: 3
+    situacao_atividade_nova_seq: 1
 scenarios:
-  - name: "cadastro/remoção de atividades"
+  - name: "inserção de registros na lista de trabalho"
     flow:
         # login/auth
         - get:
@@ -39,6 +42,71 @@ scenarios:
                 as: "token"
               - json: "$.usuario.unidade.areaGestao.id"
                 as: "area_gestao_id"
+        # salva o objeto do formulario que será utilizado
+        - get:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/formularios/{{ inspecao_geral_form_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$"
+                as: "inspecao_geral_form_obj"
+        # permite a edição de atividades em situação "Nova"
+        - put:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/situacoes-atividade/{{ situacao_atividade_nova_seq }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              id: "{{ situacao_atividade_nova_seq }}"
+              nome: "Nova"
+              ativo: true
+              sequencia: "{{ situacao_atividade_nova_seq }}" 
+              liberadaParaEdicao: true
+              exigeJustificativa: false
+        # adiciona o formulário "Inspeção Geral" às atividdades do tipo "PE"
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/tipoatividade-formulario/bulk"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              [
+                {
+                  formularioId: "{{ inspecao_geral_form_id }}",
+                  tipoAtividadeId: "{{ tipo_atividade_PE_id }}"
+                }
+              ]
+            capture:
+              - json: "$[0]"
+                as: "form_pe_body"
+        # torna o formulário "Inspeção Geral" principal
+        - put:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/tipoatividade-formulario/atualizar-formulario-principal"
+            qs:
+              tipoAtividadeId: "{{ tipo_atividade_PE_id }}"
+              formularioId: "{{ inspecao_geral_form_id }}"
+              principal: true
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "setFormAsPrincipal"
+            afterResponse:
+              - "showResponseStatus"
         # insere um territorio
         - post:
             headers:
@@ -178,6 +246,57 @@ scenarios:
                   supervisor: true
                 }
               ]
+        # recupera a informação completa da atividade
+        - get:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/atividades/{{ atividade_criada_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$"
+                as: "atividade_criada_obj"
+        # recupera a informação completa do imovel
+        - get:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/imoveis/{{ imovel_criado_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$"
+                as: "imovel_criado_obj"
+        # insere um registro na lista de trabalho
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/registros-atividades"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createRegistroJsonBody"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$.id"
+                as: "registro_criado_id"
+        # deleta o registro inserido na lista de trabalho anteriormente
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/registros-atividades/{{ registro_criado_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
         # deleta a atividade criada anteriormente
         - delete:
             headers:
@@ -243,3 +362,32 @@ scenarios:
               area_gestao_atual_id: "{{ area_gestao_id }}"
             afterResponse:
               - "showResponseStatus"
+        # remove o formulário "Inspeção Geral" das atividdades do tipo "PE"
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/tipoatividade-formulario"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+              tipo_atividade_id: "{{ tipo_atividade_PE_id }}"
+              formulario_id: "{{ inspecao_geral_form_id }}"
+            afterResponse:
+              - "showResponseStatus"
+        # remove a edição de atividades em situação "Nova"
+        - put:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/situacoes-atividade/{{ situacao_atividade_nova_seq }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              id: "{{ situacao_atividade_nova_seq }}"
+              nome: "Nova"
+              ativo: true
+              sequencia: "{{ situacao_atividade_nova_seq }}" 
+              liberadaParaEdicao: false
+              exigeJustificativa: false

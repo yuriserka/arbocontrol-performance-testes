@@ -12,7 +12,7 @@ config:
     cpf: "111.111.111-11"
     senha: "12345678"
 scenarios:
-  - name: "cadastro de equipes"
+  - name: "cadastro/remoção de equipes"
     flow:
         # login/auth
         - get:

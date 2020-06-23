@@ -12,7 +12,7 @@ config:
     cpf: "111.111.111-11"
     senha: "12345678"
     inspecao_geral_form_id: 1
-    tpo_atividade_PE_id: 3
+    tipo_atividade_PE_id: 3
 scenarios:
   - name: "adição de formulario ao tipo de atividade no qual serão inseridos registros"
     flow:
@@ -53,7 +53,7 @@ scenarios:
               [
                 {
                   formularioId: "{{ inspecao_geral_form_id }}",
-                  tipoAtividadeId: "{{ tpo_atividade_PE_id }}"
+                  tipoAtividadeId: "{{ tipo_atividade_PE_id }}"
                 }
               ]
             capture:
@@ -65,7 +65,7 @@ scenarios:
               Authorization: "Bearer {{ token }}"
             url: "/api/v1/tipoatividade-formulario/atualizar-formulario-principal"
             qs:
-              tipoAtividadeId: "{{ tpo_atividade_PE_id }}"
+              tipoAtividadeId: "{{ tipo_atividade_PE_id }}"
               formularioId: "{{ inspecao_geral_form_id }}"
               principal: true
               unidade_atual_id: "{{ unidade_id }}"
@@ -82,7 +82,7 @@ scenarios:
             qs:
               unidade_atual_id: "{{ unidade_id }}"
               area_gestao_atual_id: "{{ area_gestao_id }}"
-              tipo_atividade_id: "{{ tpo_atividade_PE_id }}"
+              tipo_atividade_id: "{{ tipo_atividade_PE_id }}"
               formulario_id: "{{ inspecao_geral_form_id }}"
             afterResponse:
               - "showResponseStatus"
