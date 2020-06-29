@@ -15,5 +15,16 @@ module.exports = {
             response_body: res.body,
         });
         return next();
-    }
+    },
+    logErrorIfAny: (req, res, ctx, ee, next) => {
+        switch (res.statusCode) {
+            case 200:
+            case 201:
+                break;
+            default:
+                console.log({ error: res.body });
+                break;
+        }
+        return next();
+    },
 }
