@@ -34,7 +34,7 @@ module.exports = {
         return next();
     },
     getMetrics: (req, res, ctx, ee, next) => {
-        const baseUrl = '/actuator/metrics';
+        const baseUrl = 'http://localhost:9995/actuator/metrics';
         const headers = {
             Authorization: 'Basic Y2xpZW50OmNsaWVudA==',
         };
@@ -46,9 +46,9 @@ module.exports = {
         axios.all(endpoints.map(e => axios.get(`${baseUrl}/${e}`, { headers })))
             .then(axios.spread((...responses) => {
                 const [r1, r2, r3] = responses;
-                ee.emit('histogram', 'process.cpu.usage', getMetricResponseInterestedValue(r1));
-                ee.emit('histogram', 'system.cpu.usage', getMetricResponseInterestedValue(r2));
-                ee.emit('histogram', 'jvm.heap.usage', getMetricResponseInterestedValue(r3));
+                ee.emit('histogram', 'Process CPU', getMetricResponseInterestedValue(r1));
+                ee.emit('histogram', 'System CPU', getMetricResponseInterestedValue(r2));
+                ee.emit('histogram', 'JVM Heap', getMetricResponseInterestedValue(r3));
                 return next();
             })).catch(err => {
                 ee.emit('error', Error(`Axios Error: ${err.message}`));

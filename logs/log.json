@@ -1,39 +1,59 @@
 {
   "aggregate": {
-    "timestamp": "2020-07-07T02:04:59.091Z",
+    "timestamp": "2020-07-07T02:16:15.802Z",
     "scenariosCreated": 1,
     "scenariosCompleted": 1,
     "requestsCompleted": 35,
     "latency": {
-      "min": 9.7,
-      "max": 101,
-      "median": 13.8,
-      "p95": 45.5,
-      "p99": 101
+      "min": 9,
+      "max": 88.5,
+      "median": 19.4,
+      "p95": 46.4,
+      "p99": 88.5
     },
     "rps": {
       "count": 35,
-      "mean": 35
+      "mean": 8.62
     },
     "scenarioDuration": {
-      "min": 996.5,
-      "max": 996.5,
-      "median": 996.5,
-      "p95": 996.5,
-      "p99": 996.5
+      "min": 3845.5,
+      "max": 3845.5,
+      "median": 3845.5,
+      "p95": 3845.5,
+      "p99": 3845.5
     },
     "scenarioCounts": {
       "inserção de registros na lista de trabalho": 1
     },
-    "errors": {
-      "Error: Axios Error: Request failed with status code 404": 35
-    },
+    "errors": {},
     "codes": {
       "200": 32,
       "201": 3
     },
     "matches": 0,
-    "customStats": {},
+    "customStats": {
+      "Process CPU": {
+        "min": 0,
+        "max": 0.8,
+        "median": 0.6,
+        "p95": 0.8,
+        "p99": 0.8
+      },
+      "System CPU": {
+        "min": 0.1,
+        "max": 0.9,
+        "median": 0.6,
+        "p95": 0.9,
+        "p99": 0.9
+      },
+      "JVM Heap": {
+        "min": 667113344,
+        "max": 717546248,
+        "median": 690694296,
+        "p95": 717546248,
+        "p99": 717546248
+      }
+    },
     "counters": {},
     "scenariosAvoided": 0,
     "phases": [
@@ -45,77 +65,97 @@
   },
   "intermediate": [
     {
-      "timestamp": "2020-07-07T02:04:59.088Z",
+      "timestamp": "2020-07-07T02:16:15.785Z",
       "scenariosCreated": 1,
       "scenariosCompleted": 1,
       "requestsCompleted": 35,
       "latency": {
-        "min": 9.7,
-        "max": 101,
-        "median": 13.8,
-        "p95": 45.5,
-        "p99": 101
+        "min": 9,
+        "max": 88.5,
+        "median": 19.4,
+        "p95": 46.4,
+        "p99": 88.5
       },
       "rps": {
         "count": 35,
-        "mean": 35
+        "mean": 8.66
       },
       "scenarioDuration": {
-        "min": 996.5,
-        "max": 996.5,
-        "median": 996.5,
-        "p95": 996.5,
-        "p99": 996.5
+        "min": 3845.5,
+        "max": 3845.5,
+        "median": 3845.5,
+        "p95": 3845.5,
+        "p99": 3845.5
       },
       "scenarioCounts": {
         "inserção de registros na lista de trabalho": 1
       },
-      "errors": {
-        "Error: Axios Error: Request failed with status code 404": 35
-      },
+      "errors": {},
       "codes": {
         "200": 32,
         "201": 3
       },
       "matches": 0,
       "latencies": [
-        13075700,
-        9686300,
-        11603200,
-        21013700,
-        10937400,
-        37325000,
-        20412800,
-        14068800,
-        31695800,
-        10742800,
-        17137100,
-        16803100,
-        14262900,
-        11876300,
-        13835000,
-        9826300,
-        14274200,
-        10793600,
-        100981200,
-        11082100,
-        14794000,
-        14533500,
-        18740100,
-        11162200,
-        14795500,
-        10267600,
-        14085900,
-        11593600,
-        48201900,
-        16889000,
-        10460500,
-        11087800,
-        11202500,
-        11470000,
-        10428900
+        42148900,
+        17904000,
+        20022500,
+        18841000,
+        17971700,
+        88492000,
+        19387200,
+        46389400,
+        19643900,
+        10005700,
+        42976100,
+        10714800,
+        41226500,
+        10113900,
+        46294100,
+        11709200,
+        41606600,
+        15725900,
+        40201800,
+        9343000,
+        32523400,
+        10658200,
+        33719400,
+        8964700,
+        32727800,
+        9111300,
+        45220900,
+        9201200,
+        37045200,
+        41488500,
+        12982800,
+        10149300,
+        10500800,
+        21223100,
+        10875900
       ],
-      "customStats": {},
+      "customStats": {
+        "Process CPU": {
+          "min": 0,
+          "max": 0.8,
+          "median": 0.6,
+          "p95": 0.8,
+          "p99": 0.8
+        },
+        "System CPU": {
+          "min": 0.1,
+          "max": 0.9,
+          "median": 0.6,
+          "p95": 0.9,
+          "p99": 0.9
+        },
+        "JVM Heap": {
+          "min": 667113344,
+          "max": 717546248,
+          "median": 690694296,
+          "p95": 717546248,
+          "p99": 717546248
+        }
+      },
       "counters": {},
       "concurrency": 0,
       "pendingRequests": 0,

@@ -49,27 +49,27 @@
   <script>
   window.Report = {
   "aggregate": {
-    "timestamp": "2020-07-07T01:16:24.619Z",
+    "timestamp": "2020-07-07T02:16:15.802Z",
     "scenariosCreated": 1,
     "scenariosCompleted": 1,
     "requestsCompleted": 35,
     "latency": {
-      "min": 16,
-      "max": 152.1,
-      "median": 47.7,
-      "p95": 114.9,
-      "p99": 152.1
+      "min": 9,
+      "max": 88.5,
+      "median": 19.4,
+      "p95": 46.4,
+      "p99": 88.5
     },
     "rps": {
       "count": 35,
-      "mean": 3.67
+      "mean": 8.62
     },
     "scenarioDuration": {
-      "min": 9070.4,
-      "max": 9070.4,
-      "median": 9070.4,
-      "p95": 9070.4,
-      "p99": 9070.4
+      "min": 3845.5,
+      "max": 3845.5,
+      "median": 3845.5,
+      "p95": 3845.5,
+      "p99": 3845.5
     },
     "scenarioCounts": {
       "inserção de registros na lista de trabalho": 1
@@ -80,7 +80,29 @@
       "201": 3
     },
     "matches": 0,
-    "customStats": {},
+    "customStats": {
+      "Process CPU": {
+        "min": 0,
+        "max": 0.8,
+        "median": 0.6,
+        "p95": 0.8,
+        "p99": 0.8
+      },
+      "System CPU": {
+        "min": 0.1,
+        "max": 0.9,
+        "median": 0.6,
+        "p95": 0.9,
+        "p99": 0.9
+      },
+      "JVM Heap": {
+        "min": 667113344,
+        "max": 717546248,
+        "median": 690694296,
+        "p95": 717546248,
+        "p99": 717546248
+      }
+    },
     "counters": {},
     "scenariosAvoided": 0,
     "phases": [
@@ -92,27 +114,27 @@
   },
   "intermediate": [
     {
-      "timestamp": "2020-07-07T01:16:24.073Z",
+      "timestamp": "2020-07-07T02:16:15.785Z",
       "scenariosCreated": 1,
-      "scenariosCompleted": 0,
+      "scenariosCompleted": 1,
       "requestsCompleted": 35,
       "latency": {
-        "min": 16,
-        "max": 152.1,
-        "median": 47.7,
-        "p95": 114.9,
-        "p99": 152.1
+        "min": 9,
+        "max": 88.5,
+        "median": 19.4,
+        "p95": 46.4,
+        "p99": 88.5
       },
       "rps": {
         "count": 35,
-        "mean": 3.89
+        "mean": 8.66
       },
       "scenarioDuration": {
-        "min": null,
-        "max": null,
-        "median": null,
-        "p95": null,
-        "p99": null
+        "min": 3845.5,
+        "max": 3845.5,
+        "median": 3845.5,
+        "p95": 3845.5,
+        "p99": 3845.5
       },
       "scenarioCounts": {
         "inserção de registros na lista de trabalho": 1
@@ -123,40 +145,29 @@
         "201": 3
       },
       "matches": 0,
-      "customStats": {},
-      "counters": {},
-      "concurrency": 1,
-      "pendingRequests": 0,
-      "scenariosAvoided": 0
-    },
-    {
-      "timestamp": "2020-07-07T01:16:24.609Z",
-      "scenariosCreated": 0,
-      "scenariosCompleted": 1,
-      "requestsCompleted": 0,
-      "latency": {
-        "min": null,
-        "max": null,
-        "median": null,
-        "p95": null,
-        "p99": null
+      "customStats": {
+        "Process CPU": {
+          "min": 0,
+          "max": 0.8,
+          "median": 0.6,
+          "p95": 0.8,
+          "p99": 0.8
+        },
+        "System CPU": {
+          "min": 0.1,
+          "max": 0.9,
+          "median": 0.6,
+          "p95": 0.9,
+          "p99": 0.9
+        },
+        "JVM Heap": {
+          "min": 667113344,
+          "max": 717546248,
+          "median": 690694296,
+          "p95": 717546248,
+          "p99": 717546248
+        }
       },
-      "rps": {
-        "count": 0,
-        "mean": null
-      },
-      "scenarioDuration": {
-        "min": 9070.4,
-        "max": 9070.4,
-        "median": 9070.4,
-        "p95": 9070.4,
-        "p99": 9070.4
-      },
-      "scenarioCounts": {},
-      "errors": {},
-      "codes": {},
-      "matches": 0,
-      "customStats": {},
       "counters": {},
       "concurrency": 0,
       "pendingRequests": 0,
@@ -302,6 +313,84 @@
 </div>
 
 
+  
+    
+    <div class="row">
+      <div class="id_5610 text-center col-lg-12"></div>
+      <script>
+      var histogramData = _.map(Report.aggregate.customStats['Process CPU'], function(v, k) { return {bin: k, value: v} });
+      MG.data_graphic({
+        chart_type: 'bar',
+        x_label: 'Percentile',
+        y_label: '(ms)',
+        animate_on_load: true,
+        title: 'Process CPU distribution',
+        description: 'Distribution of Process CPU',
+        target: '.id_5610',
+        data: histogramData,
+        x_accessor: 'bin',
+        y_accessor: 'value',
+        binned: true,
+        height: 250,
+        interpolate: 'monotone',
+        padding_percentage: 0,
+        bar_orientation: 'vertical',
+        width: 450
+      });
+      </script>
+    </div>
+  
+    
+    <div class="row">
+      <div class="id_7627 text-center col-lg-12"></div>
+      <script>
+      var histogramData = _.map(Report.aggregate.customStats['System CPU'], function(v, k) { return {bin: k, value: v} });
+      MG.data_graphic({
+        chart_type: 'bar',
+        x_label: 'Percentile',
+        y_label: '(ms)',
+        animate_on_load: true,
+        title: 'System CPU distribution',
+        description: 'Distribution of System CPU',
+        target: '.id_7627',
+        data: histogramData,
+        x_accessor: 'bin',
+        y_accessor: 'value',
+        binned: true,
+        height: 250,
+        interpolate: 'monotone',
+        padding_percentage: 0,
+        bar_orientation: 'vertical',
+        width: 450
+      });
+      </script>
+    </div>
+  
+    
+    <div class="row">
+      <div class="id_1366 text-center col-lg-12"></div>
+      <script>
+      var histogramData = _.map(Report.aggregate.customStats['JVM Heap'], function(v, k) { return {bin: k, value: v} });
+      MG.data_graphic({
+        chart_type: 'bar',
+        x_label: 'Percentile',
+        y_label: '(ms)',
+        animate_on_load: true,
+        title: 'JVM Heap distribution',
+        description: 'Distribution of JVM Heap',
+        target: '.id_1366',
+        data: histogramData,
+        x_accessor: 'bin',
+        y_accessor: 'value',
+        binned: true,
+        height: 250,
+        interpolate: 'monotone',
+        padding_percentage: 0,
+        bar_orientation: 'vertical',
+        width: 450
+      });
+      </script>
+    </div>
   
 
 
