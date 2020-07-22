@@ -27,4 +27,4 @@ Repositório com o fim de realizar os testes de performance/carga voltados para 
 
 ## Checando os resultados
 
-Os resultados dos testes são criados após o fim da execução dos mesmos e estão dispostos em gráficos. Basta abrir o arquivo [reports/index.html](reports/report/index.html) em algum navegador.
+Os resultados dos testes são criados após o fim da execução dos mesmos e estão dispostos em gráficos. Basta abrir o arquivo [reports/index.html](reports/index.html) em algum navegador.
