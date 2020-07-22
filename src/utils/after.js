@@ -1,7 +1,9 @@
 const axios = require('../api');
 
+let reqCounter = 0;
+
 function getMetricResponseInterestedValue(r) {
-    return r.data.measurements[0].value;
+    return Number(r.data.measurements[0].value);
 }
 
 module.exports = {
@@ -34,6 +36,9 @@ module.exports = {
         return next();
     },
     getMetrics: (req, res, ctx, ee, next) => {
+        if ((++reqCounter) % 15) {
+            return next();
+        }
         const baseUrl = 'http://localhost:9995/actuator/metrics';
         const headers = {
             Authorization: 'Basic Y2xpZW50OmNsaWVudA==',

@@ -1,0 +1,248 @@
+{
+  "id": null,
+  "titulo": "dsafdfssfd",
+  "descricao": "",
+  "versao": null,
+  "ativo": true,
+  "questoes": [
+    {
+      "nome": "_agente",
+      "titulo": "Agente"
+    },
+    {
+      "nome": "_supervisor",
+      "titulo": "Supervisor"
+    },
+    {
+      "nome": "latitude",
+      "titulo": "Latitude Atual"
+    },
+    {
+      "nome": "longitude",
+      "titulo": "Longitude Atual"
+    },
+    {
+      "nome": "atividade_tipo_atividade",
+      "titulo": "Tipo de Atividade"
+    },
+    {
+      "nome": "atividade_ciclo",
+      "titulo": "Ciclo"
+    },
+    {
+      "nome": "atividade_data_inspecao",
+      "titulo": "Data Inspeção"
+    },
+    {
+      "nome": "atividade_hora_entrada",
+      "titulo": "Hora da entrada"
+    },
+    {
+      "nome": "atividade_hora_saida",
+      "titulo": "Hora da saída"
+    },
+    {
+      "nome": "atividade_tipo_visita",
+      "titulo": "Tipo de Visita"
+    },
+    {
+      "nome": "atividade_pendencia",
+      "titulo": "Pendência"
+    },
+    {
+      "nome": "a1_inspecionado",
+      "titulo": "A1 Inspecionado"
+    },
+    {
+      "nome": "a1_positivo",
+      "titulo": "A1 Positivo"
+    },
+    {
+      "nome": "a1_eliminado",
+      "titulo": "A1 Eliminado"
+    },
+    {
+      "nome": "a2_inspecionado",
+      "titulo": "A2 Inspecionado"
+    },
+    {
+      "nome": "a2_positivo",
+      "titulo": "A2 Positivo"
+    },
+    {
+      "nome": "a2_eliminado",
+      "titulo": "A2 Eliminado"
+    },
+    {
+      "nome": "b_inspecionado",
+      "titulo": "B Inspecionado"
+    },
+    {
+      "nome": "b_positivo",
+      "titulo": "B Positivo"
+    },
+    {
+      "nome": "b_eliminado",
+      "titulo": "B Eliminado"
+    },
+    {
+      "nome": "c_inspecionado",
+      "titulo": "C Inspecionado"
+    },
+    {
+      "nome": "c_positivo",
+      "titulo": "C Positivo"
+    },
+    {
+      "nome": "c_eliminado",
+      "titulo": "C Eliminado"
+    },
+    {
+      "nome": "d1_inspecionado",
+      "titulo": "D1 Inspecionado"
+    },
+    {
+      "nome": "d1_positivo",
+      "titulo": "D1 Positivo"
+    },
+    {
+      "nome": "d1_eliminado",
+      "titulo": "D1 Eliminado"
+    },
+    {
+      "nome": "d2_inspecionado",
+      "titulo": "D2 Inspecionado"
+    },
+    {
+      "nome": "d2_positivo",
+      "titulo": "D2 Positivo"
+    },
+    {
+      "nome": "d2_eliminado",
+      "titulo": "D2 Eliminado"
+    },
+    {
+      "nome": "e_inspecionado",
+      "titulo": "E Inspecionado"
+    },
+    {
+      "nome": "e_positivo",
+      "titulo": "E Positivo"
+    },
+    {
+      "nome": "e_eliminado",
+      "titulo": "E Eliminado"
+    },
+    {
+      "nome": "atividade_total_inspecionado",
+      "titulo": "Total Inspecionado"
+    },
+    {
+      "nome": "depositos_total_positivo",
+      "titulo": "Total Positivo"
+    },
+    {
+      "nome": "depositos_total_eliminado",
+      "titulo": "Total Eliminado"
+    },
+    {
+      "nome": "coleta_amostra_numero_inicial",
+      "titulo": "Numero Inicial"
+    },
+    {
+      "nome": "coleta_amostra_numero_final",
+      "titulo": "Número Final"
+    },
+    {
+      "nome": "coleta_amostra_qtde_tubitos",
+      "titulo": "Qtde Tubitos"
+    },
+    {
+      "nome": "tratamento_larvicida_tipo_1",
+      "titulo": "Tipo 1"
+    },
+    {
+      "nome": "tratamento_larvicida_qtde_gramas_tipo_1",
+      "titulo": "Qtde Tipo 1 (g)"
+    },
+    {
+      "nome": "tratamento_larvicida_qtde_tratados_tipo_1",
+      "titulo": "Qtde Tratados"
+    },
+    {
+      "nome": "tratamento_larvicida_tipo_2",
+      "titulo": "Tipo 2"
+    },
+    {
+      "nome": "tratamento_larvicida_qtde_gramas_tipo_2",
+      "titulo": "Qtde Tipo 2 (g)"
+    },
+    {
+      "nome": "tratamento_larvicida_qtde_tratados_tipo_2",
+      "titulo": "Qtde Tratados"
+    },
+    {
+      "nome": "tratamento_larvicida_total_tratado",
+      "titulo": "Total Tratado"
+    },
+    {
+      "nome": "tratamento_adulticida_tipo",
+      "titulo": "Tipo Adulticida"
+    },
+    {
+      "nome": "tratamento_adulticida_qtde_cargas",
+      "titulo": "Quantidade Cargas"
+    }
+  ],
+  "arranjoPivotTable": {
+    "rows": [
+      {
+        "uniqueName": "Código do Registro"
+      }
+    ],
+    "columns": [
+      {
+        "uniqueName": "Measures"
+      }
+    ],
+    "measures": [
+      {
+        "uniqueName": "Atividade Semana",
+        "aggregation": "sum"
+      }
+    ]
+  },
+  "options": {
+    "grid": {
+      "type": "classic",
+      "title": "",
+      "showFilter": true,
+      "showHeaders": true,
+      "showTotals": "on",
+      "showGrandTotals": "on",
+      "grandTotalsPosition": "top",
+      "showExtraTotalLabels": false,
+      "showHierarchies": true,
+      "showHierarchyCaptions": true,
+      "drillthroughMaxRows": 1000,
+      "showReportFiltersArea": true,
+      "showAutoCalculationBar": true
+    },
+    "configuratorActive": false,
+    "configuratorButton": true,
+    "showAggregations": true,
+    "showCalculatedValuesButton": true,
+    "drillThrough": true,
+    "showDrillThroughConfigurator": true,
+    "sorting": "on",
+    "datePattern": "dd/MM/yyyy",
+    "dateTimePattern": "dd/MM/yyyy HH:mm:ss",
+    "saveAllFormats": false,
+    "showDefaultSlice": true,
+    "showEmptyData": true,
+    "defaultHierarchySortName": "asc",
+    "selectEmptyCells": true,
+    "showAggregationLabels": false
+  },
+  "tipoRelatorio": "RELATORIO"
+}

@@ -2,12 +2,8 @@ config:
   target: 'http://localhost:9995'
   phases:
     - duration: 10
-      arrivalRate: 1
-      rampTo: 10
-      name: "Warm up the application"
-    - duration: 20
-      arrivalRate: 20
-      name: "Sustained max load"
+      arrivalRate: 10
+      rampTo: 15
   processor: "../src/index.js"
   defaults:
     headers:
@@ -18,12 +14,15 @@ config:
     inspecao_geral_form_id: 1
     tipo_atividade_PE_id: 3
     situacao_atividade_nova_seq: 1
+    registros_ids: {}
+    $this: 
 before:
   afterResponse:
     # - "getMetrics"
     - "showResponseStatus"
     - "logErrorIfAny"
   flow:
+      # - function: "addUUID"
       # login/auth
       - get:
           url: "/api/auth/pesquisar-unidades-por-cpf"
@@ -258,6 +257,7 @@ scenarios:
                 as: "imovel_criado_obj"
         # insere um registro na lista de trabalho
         - loop:
+            # - think: 3
             - post:
                 headers:
                   Authorization: "Bearer {{ token }}"
@@ -267,19 +267,48 @@ scenarios:
                   area_gestao_atual_id: "{{ area_gestao_id }}"
                 beforeRequest:
                   - "createRegistroJsonBody"
+                afterResponse:
+                  - "pushRegistroId"
                 capture:
                   - json: "$.id"
                     as: "registro_criado_id"
-            # deleta o registro inserido na lista de trabalho anteriormente
+          count: "{{ $randomNumber(10, 20) }}"
+        # cria um relatorio
+        - think: 10 # tempo necessário para q consiga puxar todos os registros q foram inseridos
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/relatorios"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createRelatorioJsonBody"
+            capture:
+              - json: "$.id"
+                as: "relatorio_criado_id"
+        # deleta o relatorio criado
+        # - delete:
+        #     headers:
+        #       Authorization: "Bearer {{ token }}"
+        #     url: "/api/v1/relatorios/{{ relatorio_criado_id }}"
+        #     qs:
+        #       unidade_atual_id: "{{ unidade_id }}"
+        #       area_gestao_atual_id: "{{ area_gestao_id }}"
+        # deleta os registros da lista de trabalho que foram inseridos por cada thread
+        - loop:
             - delete:
                 headers:
                   Authorization: "Bearer {{ token }}"
-                url: "/api/v1/registros-atividades/{{ registro_criado_id }}"
+                url: "/"
                 qs:
                   unidade_atual_id: "{{ unidade_id }}"
                   area_gestao_atual_id: "{{ area_gestao_id }}"
-            - think: 3
-          count: 10
+                beforeRequest:
+                  - "setDeleteRegistrosAtividadesURL"
+                afterResponse:
+                  - "deleteRegistroId"
+          whileTrue: "okToDelete"
         # deleta a atividade criada anteriormente
         - delete:
             headers:

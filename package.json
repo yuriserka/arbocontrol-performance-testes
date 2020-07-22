@@ -5,7 +5,7 @@
   "repository": "https://github.com/yuriserka/arbocontrol-performance-testes",
   "license": "MIT",
   "scripts": {
-    "launch": "yarn artillery run -o ./logs/log.json ./scripts/7_lista_de_trabalho.yaml",
+    "launch": "yarn artillery run -o ./logs/log.json ./scripts/8_relatorios.yaml",
     "report": "yarn artillery report ./logs/log.json -o ./reports/index.html"
   },
   "dependencies": {

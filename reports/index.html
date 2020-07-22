@@ -49,125 +49,485 @@
   <script>
   window.Report = {
   "aggregate": {
-    "timestamp": "2020-07-07T02:25:17.646Z",
-    "scenariosCreated": 1,
-    "scenariosCompleted": 1,
-    "requestsCompleted": 35,
+    "timestamp": "2020-07-13T21:59:47.257Z",
+    "scenariosCreated": 453,
+    "scenariosCompleted": 453,
+    "requestsCompleted": 15855,
     "latency": {
-      "min": 8.6,
-      "max": 79.6,
-      "median": 11.7,
-      "p95": 45.3,
-      "p99": 79.6
+      "min": 6.7,
+      "max": 3045.7,
+      "median": 363.2,
+      "p95": 1631.7,
+      "p99": 2868.9
     },
     "rps": {
-      "count": 35,
-      "mean": 8.64
+      "count": 15855,
+      "mean": 130.74
     },
     "scenarioDuration": {
-      "min": 3578.2,
-      "max": 3578.2,
-      "median": 3578.2,
-      "p95": 3578.2,
-      "p99": 3578.2
+      "min": 46531.5,
+      "max": 85300.9,
+      "median": 76739.9,
+      "p95": 82779.6,
+      "p99": 83462.9
     },
     "scenarioCounts": {
-      "inserção de registros na lista de trabalho": 1
+      "inserção de registros na lista de trabalho": 453
     },
     "errors": {},
     "codes": {
-      "200": 32,
-      "201": 3
+      "200": 14496,
+      "201": 1359
     },
     "matches": 0,
-    "customStats": {
-      "Process CPU": {
-        "min": 0.1,
-        "max": 0.8,
-        "median": 0.6,
-        "p95": 0.8,
-        "p99": 0.8
-      },
-      "System CPU": {
-        "min": 0.1,
-        "max": 0.9,
-        "median": 0.7,
-        "p95": 0.8,
-        "p99": 0.9
-      },
-      "JVM Heap": {
-        "min": 761023032,
-        "max": 815077968,
-        "median": 787909848,
-        "p95": 805119176,
-        "p99": 815077968
-      }
-    },
+    "customStats": {},
     "counters": {},
     "scenariosAvoided": 0,
     "phases": [
       {
-        "duration": 1,
-        "arrivalRate": 1
+        "duration": 10,
+        "arrivalRate": 1,
+        "rampTo": 10,
+        "name": "Warm up the application"
+      },
+      {
+        "duration": 20,
+        "arrivalRate": 20,
+        "name": "Sustained max load"
       }
     ]
   },
   "intermediate": [
     {
-      "timestamp": "2020-07-07T02:25:17.621Z",
-      "scenariosCreated": 1,
-      "scenariosCompleted": 1,
-      "requestsCompleted": 35,
+      "timestamp": "2020-07-13T21:57:55.791Z",
+      "scenariosCreated": 43,
+      "scenariosCompleted": 0,
+      "requestsCompleted": 505,
       "latency": {
-        "min": 8.6,
-        "max": 79.6,
-        "median": 11.7,
-        "p95": 45.3,
-        "p99": 79.6
+        "min": 7,
+        "max": 84.4,
+        "median": 16.9,
+        "p95": 38.9,
+        "p99": 67.1
       },
       "rps": {
-        "count": 35,
-        "mean": 8.68
+        "count": 508,
+        "mean": 51.94
       },
       "scenarioDuration": {
-        "min": 3578.2,
-        "max": 3578.2,
-        "median": 3578.2,
-        "p95": 3578.2,
-        "p99": 3578.2
+        "min": null,
+        "max": null,
+        "median": null,
+        "p95": null,
+        "p99": null
       },
       "scenarioCounts": {
-        "inserção de registros na lista de trabalho": 1
+        "inserção de registros na lista de trabalho": 43
       },
       "errors": {},
       "codes": {
-        "200": 32,
-        "201": 3
+        "200": 376,
+        "201": 129
       },
       "matches": 0,
-      "customStats": {
-        "Process CPU": {
-          "min": 0.1,
-          "max": 0.8,
-          "median": 0.6,
-          "p95": 0.8,
-          "p99": 0.8
-        },
-        "System CPU": {
-          "min": 0.1,
-          "max": 0.9,
-          "median": 0.7,
-          "p95": 0.8,
-          "p99": 0.9
-        },
-        "JVM Heap": {
-          "min": 761023032,
-          "max": 815077968,
-          "median": 787909848,
-          "p95": 805119176,
-          "p99": 815077968
-        }
+      "customStats": {},
+      "counters": {},
+      "concurrency": 43,
+      "pendingRequests": 3,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-07-13T21:58:05.906Z",
+      "scenariosCreated": 141,
+      "scenariosCompleted": 0,
+      "requestsCompleted": 1797,
+      "latency": {
+        "min": 6.7,
+        "max": 359.9,
+        "median": 75.1,
+        "p95": 179.8,
+        "p99": 275.5
       },
+      "rps": {
+        "count": 1820,
+        "mean": 180.02
+      },
+      "scenarioDuration": {
+        "min": null,
+        "max": null,
+        "median": null,
+        "p95": null,
+        "p99": null
+      },
+      "scenarioCounts": {
+        "inserção de registros na lista de trabalho": 141
+      },
+      "errors": {},
+      "codes": {
+        "200": 1398,
+        "201": 399
+      },
+      "matches": 0,
+      "customStats": {},
+      "counters": {},
+      "concurrency": 184,
+      "pendingRequests": 26,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-07-13T21:58:16.065Z",
+      "scenariosCreated": 87,
+      "scenariosCompleted": 0,
+      "requestsCompleted": 1722,
+      "latency": {
+        "min": 35.4,
+        "max": 1302.7,
+        "median": 241.6,
+        "p95": 477.7,
+        "p99": 644
+      },
+      "rps": {
+        "count": 1756,
+        "mean": 173
+      },
+      "scenarioDuration": {
+        "min": null,
+        "max": null,
+        "median": null,
+        "p95": null,
+        "p99": null
+      },
+      "scenarioCounts": {
+        "inserção de registros na lista de trabalho": 87
+      },
+      "errors": {},
+      "codes": {
+        "200": 1462,
+        "201": 260
+      },
+      "matches": 0,
+      "customStats": {},
+      "counters": {},
+      "concurrency": 271,
+      "pendingRequests": 60,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-07-13T21:58:26.288Z",
+      "scenariosCreated": 50,
+      "scenariosCompleted": 0,
+      "requestsCompleted": 1374,
+      "latency": {
+        "min": 44,
+        "max": 2350,
+        "median": 492.8,
+        "p95": 1040.4,
+        "p99": 1062.2
+      },
+      "rps": {
+        "count": 1473,
+        "mean": 144.27
+      },
+      "scenarioDuration": {
+        "min": null,
+        "max": null,
+        "median": null,
+        "p95": null,
+        "p99": null
+      },
+      "scenarioCounts": {
+        "inserção de registros na lista de trabalho": 50
+      },
+      "errors": {},
+      "codes": {
+        "200": 1223,
+        "201": 151
+      },
+      "matches": 0,
+      "customStats": {},
+      "counters": {},
+      "concurrency": 321,
+      "pendingRequests": 159,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-07-13T21:58:36.290Z",
+      "scenariosCreated": 132,
+      "scenariosCompleted": 2,
+      "requestsCompleted": 1758,
+      "latency": {
+        "min": 46.2,
+        "max": 2729.3,
+        "median": 883.9,
+        "p95": 1925.9,
+        "p99": 2077.5
+      },
+      "rps": {
+        "count": 1782,
+        "mean": 178.56
+      },
+      "scenarioDuration": {
+        "min": 46531.5,
+        "max": 47686.6,
+        "median": 47109,
+        "p95": 47686.6,
+        "p99": 47686.6
+      },
+      "scenarioCounts": {
+        "inserção de registros na lista de trabalho": 132
+      },
+      "errors": {},
+      "codes": {
+        "200": 1338,
+        "201": 420
+      },
+      "matches": 0,
+      "customStats": {},
+      "counters": {},
+      "concurrency": 451,
+      "pendingRequests": 183,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-07-13T21:58:46.369Z",
+      "scenariosCreated": 0,
+      "scenariosCompleted": 28,
+      "requestsCompleted": 1572,
+      "latency": {
+        "min": 8.6,
+        "max": 3045.7,
+        "median": 683.6,
+        "p95": 1617.3,
+        "p99": 2444
+      },
+      "rps": {
+        "count": 1424,
+        "mean": 141.27
+      },
+      "scenarioDuration": {
+        "min": 50427.5,
+        "max": 53493.7,
+        "median": 51717.3,
+        "p95": 53475.6,
+        "p99": 53493.7
+      },
+      "scenarioCounts": {},
+      "errors": {},
+      "codes": {
+        "200": 1572
+      },
+      "matches": 0,
+      "customStats": {},
+      "counters": {},
+      "concurrency": 423,
+      "pendingRequests": 35,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-07-13T21:58:59.036Z",
+      "scenariosCreated": 0,
+      "scenariosCompleted": 29,
+      "requestsCompleted": 1072,
+      "latency": {
+        "min": 10.3,
+        "max": 2993.9,
+        "median": 762.4,
+        "p95": 2969.3,
+        "p99": 2981.2
+      },
+      "rps": {
+        "count": 1141,
+        "mean": 90.13
+      },
+      "scenarioDuration": {
+        "min": 56049.8,
+        "max": 58760.8,
+        "median": 57391.3,
+        "p95": 58608.8,
+        "p99": 58760.8
+      },
+      "scenarioCounts": {},
+      "errors": {},
+      "codes": {
+        "200": 1072
+      },
+      "matches": 0,
+      "customStats": {},
+      "counters": {},
+      "concurrency": 394,
+      "pendingRequests": 104,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-07-13T21:59:09.039Z",
+      "scenariosCreated": 0,
+      "scenariosCompleted": 56,
+      "requestsCompleted": 1689,
+      "latency": {
+        "min": 7.8,
+        "max": 2877.9,
+        "median": 753.3,
+        "p95": 2168.6,
+        "p99": 2870.3
+      },
+      "rps": {
+        "count": 1638,
+        "mean": 164.13
+      },
+      "scenarioDuration": {
+        "min": 61702.7,
+        "max": 67918.2,
+        "median": 63415.6,
+        "p95": 64870.6,
+        "p99": 67770.2
+      },
+      "scenarioCounts": {},
+      "errors": {},
+      "codes": {
+        "200": 1689
+      },
+      "matches": 0,
+      "customStats": {},
+      "counters": {},
+      "concurrency": 338,
+      "pendingRequests": 53,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-07-13T21:59:20.467Z",
+      "scenariosCreated": 0,
+      "scenariosCompleted": 68,
+      "requestsCompleted": 956,
+      "latency": {
+        "min": 9.5,
+        "max": 1789.1,
+        "median": 363.4,
+        "p95": 1628,
+        "p99": 1637.2
+      },
+      "rps": {
+        "count": 974,
+        "mean": 85.21
+      },
+      "scenarioDuration": {
+        "min": 66232.1,
+        "max": 73814.5,
+        "median": 69597.4,
+        "p95": 73072.4,
+        "p99": 73757.7
+      },
+      "scenarioCounts": {},
+      "errors": {},
+      "codes": {
+        "200": 956
+      },
+      "matches": 0,
+      "customStats": {},
+      "counters": {},
+      "concurrency": 270,
+      "pendingRequests": 71,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-07-13T21:59:30.479Z",
+      "scenariosCreated": 0,
+      "scenariosCompleted": 71,
+      "requestsCompleted": 1333,
+      "latency": {
+        "min": 8.3,
+        "max": 2087,
+        "median": 407.8,
+        "p95": 1206.1,
+        "p99": 2079.4
+      },
+      "rps": {
+        "count": 1270,
+        "mean": 127
+      },
+      "scenarioDuration": {
+        "min": 73003.3,
+        "max": 80673.4,
+        "median": 76320.2,
+        "p95": 79663.9,
+        "p99": 80666.3
+      },
+      "scenarioCounts": {},
+      "errors": {},
+      "codes": {
+        "200": 1333
+      },
+      "matches": 0,
+      "customStats": {},
+      "counters": {},
+      "concurrency": 199,
+      "pendingRequests": 8,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-07-13T21:59:40.480Z",
+      "scenariosCreated": 0,
+      "scenariosCompleted": 41,
+      "requestsCompleted": 947,
+      "latency": {
+        "min": 9.6,
+        "max": 1337.3,
+        "median": 274.9,
+        "p95": 1225.8,
+        "p99": 1331.6
+      },
+      "rps": {
+        "count": 939,
+        "mean": 93.9
+      },
+      "scenarioDuration": {
+        "min": 72379.6,
+        "max": 83556.5,
+        "median": 79734.4,
+        "p95": 83208.4,
+        "p99": 83556.5
+      },
+      "scenarioCounts": {},
+      "errors": {},
+      "codes": {
+        "200": 947
+      },
+      "matches": 0,
+      "customStats": {},
+      "counters": {},
+      "concurrency": 158,
+      "pendingRequests": 0,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-07-13T21:59:47.198Z",
+      "scenariosCreated": 0,
+      "scenariosCompleted": 158,
+      "requestsCompleted": 1130,
+      "latency": {
+        "min": 9.2,
+        "max": 975.1,
+        "median": 92.8,
+        "p95": 488.3,
+        "p99": 730.7
+      },
+      "rps": {
+        "count": 1130,
+        "mean": 182.85
+      },
+      "scenarioDuration": {
+        "min": 76653.6,
+        "max": 85300.9,
+        "median": 79438.7,
+        "p95": 83387.5,
+        "p99": 85095.3
+      },
+      "scenarioCounts": {},
+      "errors": {},
+      "codes": {
+        "200": 1130
+      },
+      "matches": 0,
+      "customStats": {},
       "counters": {},
       "concurrency": 0,
       "pendingRequests": 0,
@@ -313,84 +673,6 @@
 </div>
 
 
-  
-    
-    <div class="row">
-      <div class="id_4926 text-center col-lg-12"></div>
-      <script>
-      var histogramData = _.map(Report.aggregate.customStats['Process CPU'], function(v, k) { return {bin: k, value: v} });
-      MG.data_graphic({
-        chart_type: 'bar',
-        x_label: 'Percentile',
-        y_label: '(ms)',
-        animate_on_load: true,
-        title: 'Process CPU distribution',
-        description: 'Distribution of Process CPU',
-        target: '.id_4926',
-        data: histogramData,
-        x_accessor: 'bin',
-        y_accessor: 'value',
-        binned: true,
-        height: 250,
-        interpolate: 'monotone',
-        padding_percentage: 0,
-        bar_orientation: 'vertical',
-        width: 450
-      });
-      </script>
-    </div>
-  
-    
-    <div class="row">
-      <div class="id_7330 text-center col-lg-12"></div>
-      <script>
-      var histogramData = _.map(Report.aggregate.customStats['System CPU'], function(v, k) { return {bin: k, value: v} });
-      MG.data_graphic({
-        chart_type: 'bar',
-        x_label: 'Percentile',
-        y_label: '(ms)',
-        animate_on_load: true,
-        title: 'System CPU distribution',
-        description: 'Distribution of System CPU',
-        target: '.id_7330',
-        data: histogramData,
-        x_accessor: 'bin',
-        y_accessor: 'value',
-        binned: true,
-        height: 250,
-        interpolate: 'monotone',
-        padding_percentage: 0,
-        bar_orientation: 'vertical',
-        width: 450
-      });
-      </script>
-    </div>
-  
-    
-    <div class="row">
-      <div class="id_862 text-center col-lg-12"></div>
-      <script>
-      var histogramData = _.map(Report.aggregate.customStats['JVM Heap'], function(v, k) { return {bin: k, value: v} });
-      MG.data_graphic({
-        chart_type: 'bar',
-        x_label: 'Percentile',
-        y_label: '(ms)',
-        animate_on_load: true,
-        title: 'JVM Heap distribution',
-        description: 'Distribution of JVM Heap',
-        target: '.id_862',
-        data: histogramData,
-        x_accessor: 'bin',
-        y_accessor: 'value',
-        binned: true,
-        height: 250,
-        interpolate: 'monotone',
-        padding_percentage: 0,
-        bar_orientation: 'vertical',
-        width: 450
-      });
-      </script>
-    </div>
   
 
 
