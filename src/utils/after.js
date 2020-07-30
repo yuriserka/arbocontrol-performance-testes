@@ -39,7 +39,7 @@ module.exports = {
         if ((++reqCounter) % 15) {
             return next();
         }
-        const baseUrl = 'http://localhost:9995/actuator/metrics';
+        const baseUrl = 'http://sv-app-teste:9997/actuator/metrics';
         const headers = {
             Authorization: 'Basic Y2xpZW50OmNsaWVudA==',
         };

@@ -14,8 +14,10 @@ module.exports = {
     },
     pushRegistroId: (req, res, ctx, ee, next) => {
         if (res.statusCode === 200) {
-            const arr = ctx.vars.registros_ids[ctx.vars['$uuid']] || [];
-            ctx.vars.registros_ids[ctx.vars['$uuid']] = [...arr, ctx.vars.registro_criado_id];
+            let arr = ctx.vars.registros_ids[ctx.vars['$uuid']];
+            arr = arr ? arr : [];
+            arr.push(ctx.vars.registro_criado_id);
+            ctx.vars.registros_ids[ctx.vars['$uuid']] = arr;
         }
         return next();
     },
