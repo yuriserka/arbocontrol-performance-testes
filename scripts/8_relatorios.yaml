@@ -1,9 +1,9 @@
 config:
-  target: 'http://localhost:9995'
+  target: "http://sv-app-teste:9997"
   phases:
-    - duration: 10
-      arrivalRate: 10
-      rampTo: 15
+    - duration: 1
+      arrivalRate: 1
+      # rampTo: 10
   processor: "../src/index.js"
   defaults:
     headers:
@@ -15,14 +15,12 @@ config:
     tipo_atividade_PE_id: 3
     situacao_atividade_nova_seq: 1
     registros_ids: {}
-    $this: 
 before:
   afterResponse:
     # - "getMetrics"
     - "showResponseStatus"
     - "logErrorIfAny"
   flow:
-      # - function: "addUUID"
       # login/auth
       - get:
           url: "/api/auth/pesquisar-unidades-por-cpf"
@@ -102,7 +100,7 @@ before:
             liberadaParaEdicao: true
             exigeJustificativa: false
 scenarios:
-  - name: "inserção de registros na lista de trabalho"
+  - name: "inserção de registros na lista de trabalho + criação e visualização de relatorio"
     afterResponse:
       # - "getMetrics"
       - "showResponseStatus"
@@ -272,7 +270,7 @@ scenarios:
                 capture:
                   - json: "$.id"
                     as: "registro_criado_id"
-          count: "{{ $randomNumber(10, 20) }}"
+          count: "{{ $randomNumber(5, 20) }}" # 1000
         # cria um relatorio
         - think: 10 # tempo necessário para q consiga puxar todos os registros q foram inseridos
         - post:
@@ -288,13 +286,13 @@ scenarios:
               - json: "$.id"
                 as: "relatorio_criado_id"
         # deleta o relatorio criado
-        # - delete:
-        #     headers:
-        #       Authorization: "Bearer {{ token }}"
-        #     url: "/api/v1/relatorios/{{ relatorio_criado_id }}"
-        #     qs:
-        #       unidade_atual_id: "{{ unidade_id }}"
-        #       area_gestao_atual_id: "{{ area_gestao_id }}"
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/relatorios/{{ relatorio_criado_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
         # deleta os registros da lista de trabalho que foram inseridos por cada thread
         - loop:
             - delete:

@@ -1,5 +1,5 @@
 config:
-  target: 'http://localhost:9995'
+  target: "http://sv-app-teste:9997"
   phases:
     - duration: 1
       arrivalRate: 1
