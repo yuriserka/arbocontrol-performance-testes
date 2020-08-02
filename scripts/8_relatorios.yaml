@@ -1,0 +1,387 @@
+config:
+  target: "http://sv-app-teste:9997"
+  phases:
+    - duration: 1
+      arrivalRate: 1
+      # rampTo: 10
+  processor: "../src/index.js"
+  defaults:
+    headers:
+      Content-Type: application/json
+  variables:
+    cpf: "111.111.111-11"
+    senha: "12345678"
+    inspecao_geral_form_id: 1
+    tipo_atividade_PE_id: 3
+    situacao_atividade_nova_seq: 1
+    registros_ids: {}
+before:
+  afterResponse:
+    # - "getMetrics"
+    - "showResponseStatus"
+    - "logErrorIfAny"
+  flow:
+      # login/auth
+      - get:
+          url: "/api/auth/pesquisar-unidades-por-cpf"
+          qs:
+            cpf: "{{ cpf }}"
+          capture:
+            - json: "$[0].id"
+              as: "unidade_id"
+            - json: "$[0]"
+              as: "obj_unidade_atual"
+      - post:
+          url: "/api/auth"
+          json:
+            cpf: "{{ cpf }}"
+            password: "{{ senha }}"
+            unidadeId: "{{ unidade_id }}"
+          capture:
+            - json: "$.token"
+              as: "token"
+            - json: "$.usuario.unidade.areaGestao.id"
+              as: "area_gestao_id"
+      # salva o objeto do formulario que será utilizado
+      - get:
+          headers:
+            Authorization: "Bearer {{ token }}"
+          url: "/api/v1/formularios/{{ inspecao_geral_form_id }}"
+          qs:
+            unidade_atual_id: "{{ unidade_id }}"
+            area_gestao_atual_id: "{{ area_gestao_id }}"
+          capture:
+            - json: "$"
+              as: "inspecao_geral_form_obj"
+      # adiciona o formulário "Inspeção Geral" às atividdades do tipo "PE"
+      - post:
+          headers:
+            Authorization: "Bearer {{ token }}"
+          url: "/api/v1/tipoatividade-formulario/bulk"
+          qs:
+            unidade_atual_id: "{{ unidade_id }}"
+            area_gestao_atual_id: "{{ area_gestao_id }}"
+          json:
+            [
+              {
+                formularioId: "{{ inspecao_geral_form_id }}",
+                tipoAtividadeId: "{{ tipo_atividade_PE_id }}"
+              }
+            ]
+          capture:
+            - json: "$[0]"
+              as: "form_pe_body"
+      # torna o formulário "Inspeção Geral" principal
+      - put:
+          headers:
+            Authorization: "Bearer {{ token }}"
+          url: "/api/v1/tipoatividade-formulario/atualizar-formulario-principal"
+          qs:
+            tipoAtividadeId: "{{ tipo_atividade_PE_id }}"
+            formularioId: "{{ inspecao_geral_form_id }}"
+            principal: true
+            unidade_atual_id: "{{ unidade_id }}"
+            area_gestao_atual_id: "{{ area_gestao_id }}"
+          beforeRequest:
+            - "setFormAsPrincipal"
+      # permite a edição de atividades em situação "Nova"
+      - put:
+          headers:
+            Authorization: "Bearer {{ token }}"
+          url: "/api/v1/situacoes-atividade/{{ situacao_atividade_nova_seq }}"
+          qs:
+            unidade_atual_id: "{{ unidade_id }}"
+            area_gestao_atual_id: "{{ area_gestao_id }}"
+          json:
+            id: "{{ situacao_atividade_nova_seq }}"
+            nome: "Nova"
+            ativo: true
+            sequencia: "{{ situacao_atividade_nova_seq }}" 
+            liberadaParaEdicao: true
+            exigeJustificativa: false
+scenarios:
+  - name: "inserção de registros na lista de trabalho + criação e visualização de relatorio"
+    afterResponse:
+      # - "getMetrics"
+      - "showResponseStatus"
+      - "logErrorIfAny"
+    flow:
+        # insere um territorio
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/territorios"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createTerritorioJsonBody"
+            capture:
+              - json: "$.id"
+                as: "territorio_criado_id"
+              - json: "$"
+                as: "territorio_criado_obj"
+        # insere um imovel
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/imoveis"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createImovelJsonBody"
+            capture:
+              - json: "$.id"
+                as: "imovel_criado_id"
+        # cria uma equipe vazia
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/equipes"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createEquipeJsonBody"
+            capture:
+              - json: "$.id"
+                as: "equipe_criada_id"
+        # adiciona os usuarios [1, 2] na equipe previamente criada
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/equipe-vinculo/bulk"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            json:
+              [
+                {
+                  agente: true,
+                  equipeId: "{{ equipe_criada_id }}",
+                  supervisor: false,
+                  vinculoId: {pessoaId: 1, unidadeId: "{{ unidade_id }}"},
+                  pessoaId: 1,
+                  unidadeId: 1,
+                },
+                {
+                  agente: false,
+                  equipeId: "{{ equipe_criada_id }}",
+                  supervisor: true,
+                  vinculoId: {pessoaId: 2, unidadeId: "{{ unidade_id }}"},
+                  pessoaId: 2,
+                  unidadeId: "{{ unidade_id }}",
+                }
+              ]
+        # cria uma atividade sem nenhum vinculo
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/atividades"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createAtividadeJsonBody"
+            capture:
+              - json: "$.id"
+                as: "atividade_criada_id"
+        # associa o imovel criado à atividade criada
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/atividade-imovel/bulk"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            json:
+              [
+                {
+                  imovelId: "{{ imovel_criado_id }}",
+                  atividadeId: "{{ atividade_criada_id }}"
+                }
+              ]
+        # associa a equipe criada à atividade criada
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/atividade-vinculo/bulk"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            json:
+              [
+                {
+                  vinculoId: {
+                    pessoaId: 1,
+                    unidadeId: "{{ unidade_id }}"
+                  },
+                  atividadeId: "{{ atividade_criada_id }}",
+                  agente: true,
+                  supervisor: false
+                },
+                {
+                  vinculoId: {
+                    pessoaId: 2,
+                    unidadeId: "{{ unidade_id }}"
+                  },
+                  atividadeId: "{{ atividade_criada_id }}",
+                  agente: false,
+                  supervisor: true
+                }
+              ]
+        # recupera a informação completa da atividade
+        - get:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/atividades/{{ atividade_criada_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            capture:
+              - json: "$"
+                as: "atividade_criada_obj"
+        # recupera a informação completa do imovel
+        - get:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/imoveis/{{ imovel_criado_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            capture:
+              - json: "$"
+                as: "imovel_criado_obj"
+        # insere um registro na lista de trabalho
+        - loop:
+            # - think: 3
+            - post:
+                headers:
+                  Authorization: "Bearer {{ token }}"
+                url: "/api/v1/registros-atividades"
+                qs:
+                  unidade_atual_id: "{{ unidade_id }}"
+                  area_gestao_atual_id: "{{ area_gestao_id }}"
+                beforeRequest:
+                  - "createRegistroJsonBody"
+                afterResponse:
+                  - "pushRegistroId"
+                capture:
+                  - json: "$.id"
+                    as: "registro_criado_id"
+          count: "{{ $randomNumber(5, 20) }}" # 1000
+        # cria um relatorio
+        - think: 10 # tempo necessário para q consiga puxar todos os registros q foram inseridos
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/relatorios"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createRelatorioJsonBody"
+            capture:
+              - json: "$.id"
+                as: "relatorio_criado_id"
+        # deleta o relatorio criado
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/relatorios/{{ relatorio_criado_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+        # deleta os registros da lista de trabalho que foram inseridos por cada thread
+        - loop:
+            - delete:
+                headers:
+                  Authorization: "Bearer {{ token }}"
+                url: "/"
+                qs:
+                  unidade_atual_id: "{{ unidade_id }}"
+                  area_gestao_atual_id: "{{ area_gestao_id }}"
+                beforeRequest:
+                  - "setDeleteRegistrosAtividadesURL"
+                afterResponse:
+                  - "deleteRegistroId"
+          whileTrue: "okToDelete"
+        # deleta a atividade criada anteriormente
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/atividades/{{ atividade_criada_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+        # deleta os usuarios [1, 2] que haviam sido vinculados anteriormente
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/equipe-vinculo"
+            qs:
+              equipe_id: "{{ equipe_criada_id }}"
+              pessoa_id: 1
+              unidade_id: "{{ unidade_id }}"
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/equipe-vinculo"
+            qs:
+              equipe_id: "{{ equipe_criada_id }}"
+              pessoa_id: 2
+              unidade_id: "{{ unidade_id }}"
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+        # deleta a equipe criada anteriormente
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/equipes/{{ equipe_criada_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+        # deleta o imovel criado
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/imoveis/{{ imovel_criado_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+        # deleta o territorio criado
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/territorios/{{ territorio_criado_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+        # remove o formulário "Inspeção Geral" das atividdades do tipo "PE"
+        # - delete:
+        #     headers:
+        #       Authorization: "Bearer {{ token }}"
+        #     url: "/api/v1/tipoatividade-formulario"
+        #     qs:
+        #       unidade_atual_id: "{{ unidade_id }}"
+        #       area_gestao_atual_id: "{{ area_gestao_id }}"
+        #       tipo_atividade_id: "{{ tipo_atividade_PE_id }}"
+        #       formulario_id: "{{ inspecao_geral_form_id }}"
+        # remove a edição de atividades em situação "Nova"
+        # - put:
+        #     headers:
+        #       Authorization: "Bearer {{ token }}"
+        #     url: "/api/v1/situacoes-atividade/{{ situacao_atividade_nova_seq }}"
+        #     qs:
+        #       unidade_atual_id: "{{ unidade_id }}"
+        #       area_gestao_atual_id: "{{ area_gestao_id }}"
+        #     json:
+        #       id: "{{ situacao_atividade_nova_seq }}"
+        #       nome: "Nova"
+        #       ativo: true
+        #       sequencia: "{{ situacao_atividade_nova_seq }}" 
+        #       liberadaParaEdicao: false
+        #       exigeJustificativa: false

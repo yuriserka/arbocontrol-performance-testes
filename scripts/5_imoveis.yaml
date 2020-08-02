@@ -1,0 +1,93 @@
+config:
+  target: "http://sv-app-teste:9997"
+  phases:
+    - duration: 1
+      arrivalRate: 1
+      maxVusers: 1
+  processor: "../src/index.js"
+  defaults:
+    headers:
+      Content-Type: application/json
+  variables:
+    cpf: "111.111.111-11"
+    senha: "12345678"
+scenarios:
+  - name: "cadastro/remoção de imoveis"
+    flow:
+        # login/auth
+        - get:
+            url: "/api/auth/pesquisar-unidades-por-cpf"
+            qs:
+              cpf: "{{ cpf }}"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$[0].id"
+                as: "unidade_id"
+              - json: "$[0]"
+                as: "obj_unidade_atual"
+        - post:
+            url: "/api/auth"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              cpf: "{{ cpf }}"
+              password: "{{ senha }}"
+              unidadeId: "{{ unidade_id }}"
+            capture:
+              - json: "$.token"
+                as: "token"
+              - json: "$.usuario.unidade.areaGestao.id"
+                as: "area_gestao_id"
+        # insere um territorio
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/territorios"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createTerritorioJsonBody"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$.id"
+                as: "territorio_criado_id"
+              - json: "$"
+                as: "territorio_criado_obj"
+        # insere um imovel
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/imoveis"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createImovelJsonBody"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$.id"
+                as: "imovel_criado_id"
+        # deleta o imovel criado
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/imoveis/{{ imovel_criado_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+        # deleta o territorio criado
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/territorios/{{ territorio_criado_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"

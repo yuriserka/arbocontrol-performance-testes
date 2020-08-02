@@ -1,0 +1,245 @@
+config:
+  target: "http://sv-app-teste:9997"
+  phases:
+    - duration: 1
+      arrivalRate: 1
+      maxVusers: 1
+  processor: "../src/index.js"
+  defaults:
+    headers:
+      Content-Type: application/json
+  variables:
+    cpf: "111.111.111-11"
+    senha: "12345678"
+scenarios:
+  - name: "cadastro/remoção de atividades"
+    flow:
+        # login/auth
+        - get:
+            url: "/api/auth/pesquisar-unidades-por-cpf"
+            qs:
+              cpf: "{{ cpf }}"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$[0].id"
+                as: "unidade_id"
+              - json: "$[0]"
+                as: "obj_unidade_atual"
+        - post:
+            url: "/api/auth"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              cpf: "{{ cpf }}"
+              password: "{{ senha }}"
+              unidadeId: "{{ unidade_id }}"
+            capture:
+              - json: "$.token"
+                as: "token"
+              - json: "$.usuario.unidade.areaGestao.id"
+                as: "area_gestao_id"
+        # insere um territorio
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/territorios"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createTerritorioJsonBody"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$.id"
+                as: "territorio_criado_id"
+              - json: "$"
+                as: "territorio_criado_obj"
+        # insere um imovel
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/imoveis"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createImovelJsonBody"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$.id"
+                as: "imovel_criado_id"
+        # cria uma equipe vazia
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/equipes"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createEquipeJsonBody"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$.id"
+                as: "equipe_criada_id"
+        # adiciona os usuarios [1, 2] na equipe previamente criada
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/equipe-vinculo/bulk"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              [
+                {
+                  agente: true,
+                  equipeId: "{{ equipe_criada_id }}",
+                  supervisor: false,
+                  vinculoId: {pessoaId: 1, unidadeId: "{{ unidade_id }}"},
+                  pessoaId: 1,
+                  unidadeId: 1,
+                },
+                {
+                  agente: false,
+                  equipeId: "{{ equipe_criada_id }}",
+                  supervisor: true,
+                  vinculoId: {pessoaId: 2, unidadeId: "{{ unidade_id }}"},
+                  pessoaId: 2,
+                  unidadeId: "{{ unidade_id }}",
+                }
+              ]
+        # cria uma atividade sem nenhum vinculo
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/atividades"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            beforeRequest:
+              - "createAtividadeJsonBody"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$.id"
+                as: "atividade_criada_id"
+        # associa o imovel criado à atividade criada
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/atividade-imovel/bulk"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              [
+                {
+                  imovelId: "{{ imovel_criado_id }}",
+                  atividadeId: "{{ atividade_criada_id }}"
+                }
+              ]
+        # associa a equipe criada à atividade criada
+        - post:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/atividade-vinculo/bulk"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              [
+                {
+                  vinculoId: {
+                    pessoaId: 1,
+                    unidadeId: "{{ unidade_id }}"
+                  },
+                  atividadeId: "{{ atividade_criada_id }}",
+                  agente: true,
+                  supervisor: false
+                },
+                {
+                  vinculoId: {
+                    pessoaId: 2,
+                    unidadeId: "{{ unidade_id }}"
+                  },
+                  atividadeId: "{{ atividade_criada_id }}",
+                  agente: false,
+                  supervisor: true
+                }
+              ]
+        # deleta a atividade criada anteriormente
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/atividades/{{ atividade_criada_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+        # deleta os usuarios [1, 2] que haviam sido vinculados anteriormente
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/equipe-vinculo"
+            qs:
+              equipe_id: "{{ equipe_criada_id }}"
+              pessoa_id: 1
+              unidade_id: "{{ unidade_id }}"
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/equipe-vinculo"
+            qs:
+              equipe_id: "{{ equipe_criada_id }}"
+              pessoa_id: 2
+              unidade_id: "{{ unidade_id }}"
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+        # deleta a equipe criada anteriormente
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/equipes/{{ equipe_criada_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+        # deleta o imovel criado
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/imoveis/{{ imovel_criado_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+        # deleta o territorio criado
+        - delete:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/territorios/{{ territorio_criado_id }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"

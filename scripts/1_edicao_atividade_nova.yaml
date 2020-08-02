@@ -1,0 +1,74 @@
+config:
+  target: "http://sv-app-teste:9997"
+  phases:
+    - duration: 1
+      arrivalRate: 1
+      maxVusers: 1
+  processor: "../src/index.js"
+  defaults:
+    headers:
+      Content-Type: application/json
+  variables:
+    cpf: "111.111.111-11"
+    senha: "12345678"
+    situacao_atividade_nova_seq: 1
+scenarios:
+  - name: "alterar permissão de edição de atividades em situação 'NOVA'"
+    flow:
+        # login/auth
+        - get:
+            url: "/api/auth/pesquisar-unidades-por-cpf"
+            qs:
+              cpf: "{{ cpf }}"
+            afterResponse:
+              - "showResponseStatus"
+            capture:
+              - json: "$[0].id"
+                as: "unidade_id"
+        - post:
+            url: "/api/auth"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              cpf: "{{ cpf }}"
+              password: "{{ senha }}"
+              unidadeId: "{{ unidade_id }}"
+            capture:
+              - json: "$.token"
+                as: "token"
+              - json: "$.usuario.unidade.areaGestao.id"
+                as: "area_gestao_id"
+        # permite a edição de atividades em situação "Nova"
+        - put:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/situacoes-atividade/{{ situacao_atividade_nova_seq }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              id: "{{ situacao_atividade_nova_seq }}"
+              nome: "Nova"
+              ativo: true
+              sequencia: "{{ situacao_atividade_nova_seq }}" 
+              liberadaParaEdicao: true
+              exigeJustificativa: false
+        # remove a edição de atividades em situação "Nova"
+        - put:
+            headers:
+              Authorization: "Bearer {{ token }}"
+            url: "/api/v1/situacoes-atividade/{{ situacao_atividade_nova_seq }}"
+            qs:
+              unidade_atual_id: "{{ unidade_id }}"
+              area_gestao_atual_id: "{{ area_gestao_id }}"
+            afterResponse:
+              - "showResponseStatus"
+            json:
+              id: "{{ situacao_atividade_nova_seq }}"
+              nome: "Nova"
+              ativo: true
+              sequencia: "{{ situacao_atividade_nova_seq }}" 
+              liberadaParaEdicao: false
+              exigeJustificativa: false
