@@ -1,19 +1,22 @@
 {
   "name": "arbocontrol-performance-testes",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "1.1.0",
+  "main": "server/index.js",
   "repository": "https://github.com/yuriserka/arbocontrol-performance-testes",
   "license": "MIT",
   "scripts": {
     "launch": "yarn artillery run -o ./logs/log.json ./scripts/8_relatorios.yaml",
     "report": "yarn artillery report ./logs/log.json -o ./reports/index.html",
-    "start": "node index.js"
+    "start": "node server/index.js"
   },
   "dependencies": {
     "artillery": "^1.6.0",
     "axios": "^0.19.2",
     "child_process": "^1.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "morgan": "^1.10.0",
     "uuid": "^8.2.0"
   }
 }

@@ -1,47 +1,24 @@
 const express = require('express');
 const { join } = require('path');
 const { exists } = require('fs');
-const { spawn, exec } = require('child_process');
-
-const PORT = 3333;
-const HOST = '0.0.0.0';
+const { spawn } = require('child_process');
+const cors = require('cors');
+const morgan = require('morgan');
+const {
+  returnHttpError,
+  handleStdout,
+  exitHandler,
+} = require('./utils');
+const { HOST, PORT } = require('./config');
 
 const app = express();
 
-const indexFile = join(`${__dirname}/templates/index.html`);
-const reportFile = join(`${__dirname}/reports/index.html`);
+app.use(cors({
+  origin: 'http://localhost:3333'
+}));
 
-app.get('/', (req, res) => {
-  res.status(200).sendFile(indexFile);
-});
-
-function returnHttpError(res, message) {
-  return res.status(400).json({
-    ok: false,
-    message
-  });
-}
-
-function handleStdout(res, data) {
-  const stdoutErrPattern = /^Error: .*/gm;
-
-  if (stdoutErrPattern.test(data)) {
-    return res.status(400).json({
-      ok: false,
-      message: data.match(stdoutErrPattern),
-    });
-  }
-  
-  console.log(data);
-}
-
-function exitHandler(res, retCode) {
-  if (!res.headersSent) {
-    return res.status(!retCode ? 200 : 400).json({
-      ok: retCode === 0
-    });
-  }
-}
+app.use(morgan('dev'));
+app.use(express.json());
 
 app.post('/test', (req, res) => {
   const testProc = spawn('yarn', ['launch']);
@@ -62,6 +39,8 @@ app.post('/report', (req, res) => {
 });
 
 app.get('/report', (req, res) => {
+  const reportFile = join(`${__dirname}/../reports/index.html`);
+
   exists(reportFile, ok => {
     return ok
       ? res.status(200).sendFile(reportFile)
@@ -69,4 +48,6 @@ app.get('/report', (req, res) => {
   });
 });
 
-app.listen(PORT, HOST, () => console.log('server running.'));
+app.listen(PORT, HOST, () =>
+  console.log(`performance server running on ${HOST}:${PORT}.`),
+);
