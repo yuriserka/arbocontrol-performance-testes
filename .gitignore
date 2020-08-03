@@ -3,3 +3,4 @@ apache-jmeter-*/
 node_modules
 logs
 reports
+.env
