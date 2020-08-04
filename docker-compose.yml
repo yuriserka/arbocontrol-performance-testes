@@ -8,6 +8,7 @@ services:
       dockerfile: ./.docker/Dockerfile
     volumes:
       - ./output:/usr/app/output
+    command: sh entrypoint.sh
 
 networks:
   default:

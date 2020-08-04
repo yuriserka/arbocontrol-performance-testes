@@ -7,5 +7,3 @@ COPY package.json ./
 RUN yarn
 
 COPY . .
-
-ENTRYPOINT ["sh", "run.sh"]
