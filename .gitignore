@@ -1,6 +1,5 @@
 apache-jmeter-*/
 .idea/
 node_modules
-logs
-reports
+output
 .env

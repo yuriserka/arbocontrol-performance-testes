@@ -6,11 +6,11 @@ services:
     build:
       context: .
       dockerfile: ./.docker/Dockerfile
-    command: yarn start
-    ports:
-      - "${PORT}:${PORT}"
     volumes:
-      - ".:/usr/app"
+      - type: bind
+        source: ./output
+        target: /usr/app/output
+
 networks:
   default:
     external:
