@@ -1,5 +1,6 @@
 apache-jmeter-*/
 .idea/
 node_modules
-output
+output/**
+!output/.gitkeep
 .env

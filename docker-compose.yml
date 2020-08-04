@@ -7,9 +7,7 @@ services:
       context: .
       dockerfile: ./.docker/Dockerfile
     volumes:
-      - type: bind
-        source: ./output
-        target: /usr/app/output
+      - ./output:/usr/app/output
 
 networks:
   default:
