@@ -11,6 +11,9 @@ Repositório com o fim de realizar os testes de performance/carga voltados para 
 ## Executando
 
 - Inicialize o Docker
-- Inicialize os containers da aplicação principal e o de interface dos testes
-- configure o arquivo `.env` de acordo com o `.env.example`
+- Inicialize os containers da aplicação principal
 - Execute o comando: `docker-compose up`
+
+## Verificando Resultados 
+
+Após a execução dos testes os resultados estarão na pasta [output](./output).
